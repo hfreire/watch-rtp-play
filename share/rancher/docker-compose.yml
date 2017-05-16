@@ -1,0 +1,11 @@
+server:
+  image: hfreire/watch-rtp-play:0.0.0
+  restart: always
+
+lb:
+  image: rancher/load-balancer-service
+  restart: always
+  ports:
+  - 9454:3000
+  links:
+  - server:server
