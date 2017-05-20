@@ -9,8 +9,8 @@
 Watch all 8 TV and 14 radio channels on any device that can play [HTTP Live Streaming](https://en.wikipedia.org/wiki/HTTP_Live_Streaming).
 
 ### Features
-* 8 :tv: TV channels 
-* 14 :radio: radio channels
+* 8 TV channels :tv: 
+* 14 radio channels :radio:
 * Launch :rocket: inside a Docker container :whale: so you don't need to manage the dependencies :raised_hands: :white_check_mark:
 * Quickly deploy :runner: and easily scale :two_men_holding_hands: the number of servers by using Rancher :white_check_mark:
 
