@@ -1,4 +1,4 @@
-FROM node:6.10.3-alpine
+FROM node:6.10.3-slim
 
 MAINTAINER hugo@exec.sh
 
@@ -14,6 +14,10 @@ ARG VERSION_BUILD_DATE
 ENV VERSION_BUILD_DATE $VERSION_BUILD_DATE
 
 ENV HOME /opt/$NAME
+
+RUN apt-get update && \
+    apt-get install -y git-core \
+    apt-get clean
 
 # Create app directory
 RUN mkdir -p $HOME
