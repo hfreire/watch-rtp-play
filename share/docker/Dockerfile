@@ -1,4 +1,4 @@
-FROM node:6-slim
+FROM node:6.3-slim
 
 MAINTAINER hugo@exec.sh
 
