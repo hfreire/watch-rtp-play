@@ -1,10 +1,9 @@
 # :tv: Watch and :radio: listen 🇵🇹 RTP Play without a :computer: browser
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/hfreire/watch-rtp-play.svg)](https://greenkeeper.io/)
-
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Build Status](https://travis-ci.org/hfreire/watch-rtp-play.svg?branch=master)](https://travis-ci.org/hfreire/watch-rtp-play)
 [![Coverage Status](https://coveralls.io/repos/github/hfreire/watch-rtp-play/badge.svg?branch=master)](https://coveralls.io/github/hfreire/watch-rtp-play?branch=master)
+[![Greenkeeper badge](https://badges.greenkeeper.io/hfreire/watch-rtp-play.svg)](https://greenkeeper.io/)
 [![](https://img.shields.io/github/release/hfreire/watch-rtp-play.svg)](https://github.com/hfreire/watch-rtp-play/releases)
 [![](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
