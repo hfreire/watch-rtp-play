@@ -1,0 +1,82 @@
+{
+  "rtp1": {
+    "is_tv": true
+  },
+  "rtp2": {
+    "is_tv": true
+  },
+  "rtp3": {
+    "is_tv": true
+  },
+  "rpti": {
+    "is_tv": true
+  },
+  "rtpmemoria": {
+    "is_tv": true
+  },
+  "rtpmadeira": {
+    "is_tv": true
+  },
+  "rtpacores": {
+    "is_tv": true
+  },
+  "rtpafrica": {
+    "is_tv": true
+  },
+  "antena1": {
+    "is_tv": false,
+    "name": "antena180a"
+  },
+  "antena2": {
+    "is_tv": false,
+    "name": "antena280a"
+  },
+  "antena3": {
+    "is_tv": false,
+    "name": "antena380a"
+  },
+  "rdpinternacional": {
+    "is_tv": false,
+    "name": "rdpint80a"
+  },
+  "rdpafrica": {
+    "is_tv": false,
+    "name": "rdpafrica80a"
+  },
+  "radiolusitania": {
+    "is_tv": false,
+    "name": "lusitania80a"
+  },
+  "antena2jazzin": {
+    "is_tv": false,
+    "name": "antena2jazzin80a"
+  },
+  "antena1memoria": {
+    "is_tv": false,
+    "name": "antena1memoria80a"
+  },
+  "antena1vida": {
+    "is_tv": false,
+    "name": "vida80a"
+  },
+  "antena1fado": {
+    "is_tv": false,
+    "name": "antena1fado80a"
+  },
+  "antena2opera": {
+    "is_tv": false,
+    "name": "antena2opera80a"
+  },
+  "antena1acores": {
+    "is_tv": false,
+    "name": "antena1acores80a"
+  },
+  "antena1madeira": {
+    "is_tv": false,
+    "name": "antena1madeira80a"
+  },
+  "antena3madeira": {
+    "is_tv": false,
+    "name": "antena3madeira80a"
+  }
+}
