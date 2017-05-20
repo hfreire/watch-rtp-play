@@ -21,11 +21,11 @@ Watch 8 TV and 14 radio channels on any device that can play [HTTP Live Streamin
 
 #### Use it in your terminal
 ```
-docker run hfreire/watch-rtp-play
+docker run -d -p "4543:3000" hfreire/watch-rtp-play
 ```
 
 ```
-ffplay "http://localhost:3000/playlist.m3u8?channel=rtp1"
+ffplay "http://localhost:4543/playlist.m3u8?channel=rtp1"
 ```
 
 #### Available environment variables
