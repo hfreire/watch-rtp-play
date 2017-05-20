@@ -24,7 +24,7 @@ const { getAsync } = Promise.promisifyAll(require('request').defaults({ headers 
 
 class Playlist extends Route {
   constructor () {
-    super('GET', '/playlist.m3u', 'Playlist', 'Returns a playlist')
+    super('GET', '/playlist.m3u8', 'Playlist', 'Returns a playlist')
   }
 
   handler ({ query, info }, reply) {
