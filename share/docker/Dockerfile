@@ -15,8 +15,8 @@ ENV VERSION_BUILD_DATE $VERSION_BUILD_DATE
 
 ENV HOME /opt/$NAME
 
-RUN apt-get update && \
-    apt-get install -y git-core \
+RUN apt-get update &&\
+    apt-get install -y git &&\
     apt-get clean
 
 # Create app directory
