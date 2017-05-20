@@ -23,7 +23,7 @@ docker run hfreire/watch-rtp-play
 ```
 
 ```
-ffplay "http://localhost:3000/playlist.m3u?channel=rtp1"
+ffplay "http://localhost:3000/playlist.m3u8?channel=rtp1"
 ```
 
 #### Available environment variables
