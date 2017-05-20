@@ -9,6 +9,8 @@
 
 Watch 8 TV and 14 radio channels on any device that can play [HTTP Live Streaming](https://en.wikipedia.org/wiki/HTTP_Live_Streaming).
 
+<p align="center"><img src="share/github/vlc.gif" width="540"></p>
+
 ### Features
 * 8 TV channels :tv: 
 * 14 radio channels :radio:
