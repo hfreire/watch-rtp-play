@@ -6,7 +6,7 @@
 [![](https://img.shields.io/github/release/hfreire/watch-rtp-play.svg)](https://github.com/hfreire/watch-rtp-play/releases)
 [![](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Watch all 8 TV and 14 radio channels on any device that can play [HTTP Live Streaming](https://en.wikipedia.org/wiki/HTTP_Live_Streaming).
+Watch 8 TV and 14 radio channels on any device that can play [HTTP Live Streaming](https://en.wikipedia.org/wiki/HTTP_Live_Streaming).
 
 ### Features
 * 8 TV channels :tv: 
