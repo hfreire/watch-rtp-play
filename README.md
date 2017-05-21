@@ -20,10 +20,12 @@ Watch 8 TV and 14 radio channels on any device that can play [HTTP Live Streamin
 ### How to use
 
 #### Use it in your terminal
+Run the Docker image in a container exposing the port `4543`
 ```
 docker run -d -p "4543:3000" hfreire/watch-rtp-play
 ```
 
+Open the HLS URL with ffmpeg player
 ```
 ffplay "http://localhost:4543/playlist.m3u8?channel=rtp1"
 ```
@@ -52,7 +54,7 @@ Install dependencies
 npm install
 ```
 
-Run the NPM script that will build the docker container
+Run the NPM script that will build the Docker image
 ```
 npm run build
 ```
