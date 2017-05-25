@@ -10,17 +10,10 @@ const { Route } = require('serverful')
 const Joi = require('joi')
 const Boom = require('boom')
 
-const Promise = require('bluebird')
-
 const Logger = require('modern-logger')
 
-const RandomUserAgent = require('random-http-useragent')
-
-const headers = { 'User-Agent': RandomUserAgent.get() }
-
+const HTTPRequest = require('../http-request')
 const channels = require('../channels.json')
-
-const { getAsync } = Promise.promisifyAll(require('request').defaults({ headers, gzip: true }))
 
 class Playlist extends Route {
   constructor () {
@@ -28,7 +21,7 @@ class Playlist extends Route {
   }
 
   handler ({ query }, reply) {
-    const { channel, bandwidth = 640000 } = query
+    const { channel, bandwidth = 640000, proxy = false } = query
 
     if (!channels[ channel ]) {
       reply(Boom.badRequest())
@@ -48,7 +41,7 @@ class Playlist extends Route {
       url = `${baseUrl}/chunklist_DVR.m3u8`
     }
 
-    getAsync({ url, headers })
+    HTTPRequest.get(url, headers, proxy)
       .then(({ body }) => {
         body = body.replace(/,\n/g, `,\n${baseUrl}/`)
 
@@ -73,7 +66,10 @@ class Playlist extends Route {
           .description('the channel'),
         bandwidth: Joi.number()
           .optional()
-          .description('the bandwidth')
+          .description('the bandwidth'),
+        proxy: Joi.string()
+          .optional()
+          .description('use proxy')
       }
     }
   }

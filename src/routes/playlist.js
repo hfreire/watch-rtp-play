@@ -10,17 +10,10 @@ const { Route } = require('serverful')
 const Joi = require('joi')
 const Boom = require('boom')
 
-const Promise = require('bluebird')
-
 const Logger = require('modern-logger')
 
-const RandomUserAgent = require('random-http-useragent')
-
-const headers = { 'User-Agent': RandomUserAgent.get() }
-
+const HTTPRequest = require('../http-request')
 const channels = require('../channels.json')
-
-const { getAsync } = Promise.promisifyAll(require('request').defaults({ headers }))
 
 class Playlist extends Route {
   constructor () {
@@ -28,7 +21,7 @@ class Playlist extends Route {
   }
 
   handler ({ query, info }, reply) {
-    const { channel } = query
+    const { channel, proxy = false } = query
 
     if (!channels[ channel ]) {
       reply(Boom.badRequest())
@@ -48,11 +41,11 @@ class Playlist extends Route {
 
     const headers = { 'Referer': `http://www.rtp.pt/play/direto/${channel}` }
 
-    getAsync({ url, headers })
+    HTTPRequest.get(url, headers, proxy)
       .then(({ body }) => {
-        body = body.replace(/chunklist_b640000_slpt.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=640000`)
-        body = body.replace(/chunklist_b340000_slpt.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=340000`)
-        body = body.replace(/chunklist_DVR.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}`)
+        body = body.replace(/chunklist_b640000_slpt.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=640000&proxy=${proxy}`)
+        body = body.replace(/chunklist_b340000_slpt.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=340000&proxy=${proxy}`)
+        body = body.replace(/chunklist.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&proxy=${proxy}`)
 
         reply(null, body)
       })
@@ -72,7 +65,10 @@ class Playlist extends Route {
       query: {
         channel: Joi.string()
           .required()
-          .description('the channel')
+          .description('the channel'),
+        proxy: Joi.string()
+          .optional()
+          .description('use proxy')
       }
     }
   }
