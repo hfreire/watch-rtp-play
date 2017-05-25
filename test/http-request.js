@@ -9,32 +9,37 @@ describe('HTTP Request', () => {
   let subject
   let RandomUserAgent
   let request
-  let cachedRandomUserAgentGet
-  let memoizee
 
   before(() => {
-    RandomUserAgent = td.object([ 'get' ])
+    RandomUserAgent = td.object([ 'get', 'configure' ])
 
     request = td.object([ 'get' ])
-
-    cachedRandomUserAgentGet = td.function()
-    memoizee = () => cachedRandomUserAgentGet
   })
 
   afterEach(() => td.reset())
+
+  describe('when constructing', () => {
+    beforeEach(() => {
+      td.replace('random-http-useragent', RandomUserAgent)
+
+      subject = require('../src/http-request')
+    })
+
+    it('should configure random user-agent', () => {
+      td.verify(RandomUserAgent.configure(), { ignoreExtraArgs: true, times: 1 })
+    })
+  })
 
   describe('when sending a get http request', () => {
     const url = 'my-url'
     const userAgent = 'my-user-agent'
 
     beforeEach(() => {
-      td.replace('random-user-agent', RandomUserAgent)
+      td.replace('random-http-useragent', RandomUserAgent)
+      td.when(RandomUserAgent.get()).thenResolve(userAgent)
 
       td.replace('request', request)
       td.when(request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenCallback()
-
-      td.replace('memoizee', memoizee)
-      td.when(cachedRandomUserAgentGet()).thenResolve(userAgent)
 
       subject = require('../src/http-request')
     })
@@ -46,10 +51,10 @@ describe('HTTP Request', () => {
         })
     })
 
-    it('should get random user agent', () => {
+    it('should get a random user agent', () => {
       return subject.get(url)
         .then(() => {
-          td.verify(cachedRandomUserAgentGet(), { times: 1 })
+          td.verify(RandomUserAgent.get(), { times: 1 })
         })
     })
 
@@ -91,7 +96,6 @@ describe('HTTP Request', () => {
 
   describe('when sending a get http request through tor', () => {
     const url = 'my-url'
-    const userAgent = 'my-user-agent'
     const headers = {}
     const tor = true
 
@@ -100,9 +104,6 @@ describe('HTTP Request', () => {
 
       td.replace('request', request)
       td.when(request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenCallback()
-
-      td.replace('memoizee', memoizee)
-      td.when(cachedRandomUserAgentGet()).thenResolve(userAgent)
 
       subject = require('../src/http-request')
     })

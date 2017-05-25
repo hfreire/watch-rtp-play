@@ -12,15 +12,13 @@ const RandomUserAgent = require('random-http-useragent')
 
 const { getAsync } = Promise.promisifyAll(require('request'))
 
-const memoize = require('memoizee')
-
 const defaultOptions = { socksHost: 'localhost', socksPort: 9050 }
 
 class HTTPRequest {
   constructor (options = {}) {
     this._options = _.defaults(options, defaultOptions)
 
-    this._getRandomUserAgent = memoize(RandomUserAgent.get, { promise: true, maxAge: 600000, preFetch: true })
+    RandomUserAgent.configure({ maxAge: 600000, preFetch: true })
   }
 
   get (url, headers = {}, tor = false) {
@@ -37,7 +35,7 @@ class HTTPRequest {
       _.merge(options, { agentClass, agentOptions })
     }
 
-    return this._getRandomUserAgent()
+    return RandomUserAgent.get()
       .then((userAgent) => {
         options.headers = _.assign({}, headers, { 'User-Agent': userAgent })
 
