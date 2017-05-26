@@ -1,5 +1,5 @@
 server:
-  image: hfreire/watch-rtp-play:0.0.0
+  image: hfreire/watch-rtp-play:latest
   restart: always
 
 lb:
