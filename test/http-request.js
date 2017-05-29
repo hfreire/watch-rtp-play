@@ -74,7 +74,7 @@ describe('HTTP Request', () => {
 
           const options = captor.value
 
-          options.should.have.deep.property('headers.User-Agent')
+          options.should.have.nested.property('headers.User-Agent')
           options.headers[ 'User-Agent' ].should.be.equal(userAgent)
         })
     })
