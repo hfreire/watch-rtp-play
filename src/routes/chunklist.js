@@ -67,10 +67,16 @@ class Playlist extends Route {
         bandwidth: Joi.number()
           .optional()
           .description('the bandwidth'),
-        proxy: Joi.string()
+        proxy: Joi.boolean()
           .optional()
           .description('use proxy')
       }
+    }
+  }
+
+  cors () {
+    return {
+      origin: [ '*' ]
     }
   }
 }

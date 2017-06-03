@@ -43,9 +43,12 @@ class Playlist extends Route {
 
     HTTPRequest.get(url, headers, proxy)
       .then(({ body }) => {
-        body = body.replace(/chunklist_b640000_slpt.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=640000&proxy=${proxy}`)
-        body = body.replace(/chunklist_b340000_slpt.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=340000&proxy=${proxy}`)
-        body = body.replace(/chunklist.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&proxy=${proxy}`)
+        if (channels[ channel ].is_tv) {
+          body = body.replace(/chunklist_b640000_slpt.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=640000&proxy=${proxy}`)
+          body = body.replace(/chunklist_b340000_slpt.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=340000&proxy=${proxy}`)
+        } else {
+          body = body.replace(/chunklist.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&proxy=${proxy}`)
+        }
 
         reply(null, body)
       })
@@ -70,6 +73,12 @@ class Playlist extends Route {
           .optional()
           .description('use proxy')
       }
+    }
+  }
+
+  cors () {
+    return {
+      origin: [ '*' ]
     }
   }
 }
