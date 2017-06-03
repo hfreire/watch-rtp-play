@@ -27,12 +27,17 @@ docker run -d -p "4543:3000" hfreire/watch-rtp-play
 
 Play RTP1 with ffmpeg player
 ```
-ffplay "http://localhost:4543/playlist.m3u8?channel=rtp1"
+ffplay http://localhost:4543/playlist.m3u8?channel=rtp1
 ```
 
 AirPlay RTP1 to Kodi (use [kodi.sh gist](https://gist.github.com/hfreire/5c558dc35ee842c32bda1656f87f302b))
 ```
-kodi.sh localhost:36667 "http://localhost:4543/playlist.m3u8?channel=rtp1"
+kodi.sh localhost:36667 http://localhost:4543/playlist.m3u8?channel=rtp1
+```
+
+Cast RTP1 to Chromecast (use [castnow](https://github.com/xat/castnow))
+```
+castnow http://192.168.0.1:4543/playlist.m3u8?channel=rtp1
 ```
 
 #### Available environment variables
