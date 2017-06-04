@@ -1,0 +1,6 @@
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-STREAM-INF:BANDWIDTH=640000
+http://my-host/chunklist.m3u8?channel=my-channel&bandwidth=640000&proxy=false
+#EXT-X-STREAM-INF:BANDWIDTH=340000
+http://my-host/chunklist.m3u8?channel=my-channel&bandwidth=340000&proxy=false

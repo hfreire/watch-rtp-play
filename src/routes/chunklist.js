@@ -15,7 +15,7 @@ const Logger = require('modern-logger')
 const HTTPRequest = require('../http-request')
 const channels = require('../channels.json')
 
-class Playlist extends Route {
+class Chunklist extends Route {
   constructor () {
     super('GET', '/chunklist.m3u8', 'Chunklist', 'Returns a chunklist')
   }
@@ -41,7 +41,7 @@ class Playlist extends Route {
       url = `${baseUrl}/chunklist_DVR.m3u8`
     }
 
-    HTTPRequest.get(url, headers, proxy)
+    return HTTPRequest.get(url, headers, proxy)
       .then(({ body }) => {
         body = body.replace(/,\n/g, `,\n${baseUrl}/`)
 
@@ -81,4 +81,4 @@ class Playlist extends Route {
   }
 }
 
-module.exports = new Playlist()
+module.exports = new Chunklist()

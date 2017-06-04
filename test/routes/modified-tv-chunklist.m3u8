@@ -1,0 +1,16 @@
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-TARGETDURATION:6
+#EXT-X-MEDIA-SEQUENCE:174761
+#EXTINF:6.0,
+https://streaming-live.rtp.pt/liverepeater/smil:my-channel.smil/media_b640000_slpt_174761.ts
+#EXTINF:6.0,
+https://streaming-live.rtp.pt/liverepeater/smil:my-channel.smil/media_b640000_slpt_174762.ts
+#EXTINF:6.0,
+https://streaming-live.rtp.pt/liverepeater/smil:my-channel.smil/media_b640000_slpt_174763.ts
+#EXTINF:6.0,
+https://streaming-live.rtp.pt/liverepeater/smil:my-channel.smil/media_b640000_slpt_174764.ts
+#EXTINF:6.0,
+https://streaming-live.rtp.pt/liverepeater/smil:my-channel.smil/media_b640000_slpt_174765.ts
+#EXTINF:6.0,
+https://streaming-live.rtp.pt/liverepeater/smil:my-channel.smil/media_b640000_slpt_174766.ts
