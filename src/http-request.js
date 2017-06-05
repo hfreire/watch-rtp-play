@@ -8,15 +8,20 @@
 const _ = require('lodash')
 const Promise = require('bluebird')
 
+const request = require('request')
+
 const RandomUserAgent = require('random-http-useragent')
 
-const { getAsync } = Promise.promisifyAll(require('request'))
-
-const defaultOptions = { socksHost: 'localhost', socksPort: 9050 }
+const defaultOptions = {
+  request: { gzip: true },
+  socks: { socksHost: 'localhost', socksPort: 9050 }
+}
 
 class HTTPRequest {
   constructor (options = {}) {
     this._options = _.defaults(options, defaultOptions)
+
+    this._request = Promise.promisifyAll(request.defaults(this._options.request))
 
     RandomUserAgent.configure({ maxAge: 600000, preFetch: true })
   }
@@ -30,7 +35,7 @@ class HTTPRequest {
 
     if (tor) {
       const agentClass = _.startsWith(url, 'https') ? require('socks5-https-client/lib/Agent') : require('socks5-http-client/lib/Agent')
-      const agentOptions = _.pick(this._options, [ 'socksHost', 'socksPort' ])
+      const agentOptions = this._options.socks
 
       _.merge(options, { agentClass, agentOptions })
     }
@@ -39,7 +44,7 @@ class HTTPRequest {
       .then((userAgent) => {
         options.headers = _.assign({}, headers, { 'User-Agent': userAgent })
 
-        return getAsync(options)
+        return this._request.getAsync(options)
       })
   }
 }

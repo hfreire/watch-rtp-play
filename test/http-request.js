@@ -13,7 +13,7 @@ describe('HTTP Request', () => {
   before(() => {
     RandomUserAgent = td.object([ 'get', 'configure' ])
 
-    request = td.object([ 'get' ])
+    request = td.object([ 'get', 'defaults' ])
   })
 
   afterEach(() => td.reset())
@@ -39,6 +39,7 @@ describe('HTTP Request', () => {
       td.when(RandomUserAgent.get()).thenResolve(userAgent)
 
       td.replace('request', request)
+      td.when(request.defaults(td.matchers.anything()), { ignoreExtraArgs: true }).thenReturn(request)
       td.when(request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenCallback()
 
       subject = require('../src/http-request')
@@ -103,6 +104,7 @@ describe('HTTP Request', () => {
       td.replace('random-user-agent', RandomUserAgent)
 
       td.replace('request', request)
+      td.when(request.defaults(td.matchers.anything()), { ignoreExtraArgs: true }).thenReturn(request)
       td.when(request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenCallback()
 
       subject = require('../src/http-request')

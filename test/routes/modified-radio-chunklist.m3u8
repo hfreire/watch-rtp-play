@@ -1,0 +1,14 @@
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-TARGETDURATION:3
+#EXT-X-MEDIA-SEQUENCE:251070
+#EXTINF:2.02,
+http://streaming-live.rtp.pt/liveradio/my-channel-name/media_DVR_251070.aac
+#EXTINF:2.02,
+http://streaming-live.rtp.pt/liveradio/my-channel-name/media_DVR_251071.aac
+#EXTINF:2.02,
+http://streaming-live.rtp.pt/liveradio/my-channel-name/media_DVR_251072.aac
+#EXTINF:2.02,
+http://streaming-live.rtp.pt/liveradio/my-channel-name/media_DVR_251073.aac
+#EXTINF:2.02,
+http://streaming-live.rtp.pt/liveradio/my-channel-name/media_DVR_251074.aac
