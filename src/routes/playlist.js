@@ -30,9 +30,10 @@ class Playlist extends Route {
       return
     }
 
-    const host = headers[ 'X-Real-IP' ] || info.host
+    const host = info.host
+    const proto = headers[ 'x-forwarded-proto' ] || info.protocol
 
-    const baseUrl = `http://${host}`
+    const baseUrl = `${proto}://${host}`
     let url
     if (channels[ channel ].is_tv) {
       url = `https://streaming-live.rtp.pt/liverepeater/smil:${channel}.smil/playlist.m3u`

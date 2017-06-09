@@ -29,8 +29,8 @@ describe('Playlist', () => {
     const proxy = false
     const query = { channel, proxy }
     const host = 'my-host'
-    const info = { host }
-    const request = { query, info }
+    const info = { host, protocol: 'http' }
+    const request = { query, headers: {}, info }
     let reply
     const playlistResponse = { body: readFileSync(join(__dirname, './tv-playlist-response-ok.m3u8')).toString() }
 
@@ -69,8 +69,8 @@ describe('Playlist', () => {
     const proxy = false
     const query = { channel, proxy }
     const host = 'my-host'
-    const info = { host }
-    const request = { query, info }
+    const info = { host, protocol: 'http' }
+    const request = { query, headers: {}, info }
     let reply
     const error = new Error('my-message')
 
@@ -115,8 +115,8 @@ describe('Playlist', () => {
     const proxy = false
     const query = { channel, proxy }
     const host = 'my-host'
-    const info = { host }
-    const request = { query, info }
+    const info = { host, protocol: 'http' }
+    const request = { query, headers: {}, info }
     let reply
     const playlistResponse = { body: readFileSync(join(__dirname, './radio-playlist-response-ok.m3u8')).toString() }
 
@@ -156,7 +156,7 @@ describe('Playlist', () => {
     const query = { channel, proxy }
     const host = 'my-host'
     const info = { host }
-    const request = { query, info }
+    const request = { query, headers: {}, info }
     let reply
     const error = new Error('my-message')
 
@@ -199,7 +199,7 @@ describe('Playlist', () => {
     const query = { channel, proxy }
     const host = 'my-host'
     const info = { host }
-    const request = { query, info }
+    const request = { query, headers: {}, info }
     let reply
 
     beforeEach(() => {
