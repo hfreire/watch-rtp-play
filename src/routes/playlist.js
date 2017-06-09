@@ -21,7 +21,7 @@ class Playlist extends Route {
     super('GET', '/playlist.m3u8', 'Playlist', 'Returns a playlist')
   }
 
-  handler ({ query, info }, reply) {
+  handler ({ query, headers, info }, reply) {
     const { channel, proxy = false } = query
 
     if (!channels[ channel ]) {
@@ -30,7 +30,7 @@ class Playlist extends Route {
       return
     }
 
-    const { host } = info
+    const host = headers[ 'X-Real-IP' ] || info.host
 
     const baseUrl = `http://${host}`
     let url
@@ -40,9 +40,9 @@ class Playlist extends Route {
       url = `http://streaming-live.rtp.pt/liveradio/${channels[ channel ].name}/playlist.m3u8?DVR`
     }
 
-    const headers = { 'Referer': `http://www.rtp.pt/play/direto/${channel}` }
+    const _headers = { 'Referer': `http://www.rtp.pt/play/direto/${channel}` }
 
-    return HTTPRequest.get(url, headers, proxy)
+    return HTTPRequest.get(url, _headers, proxy)
       .then(({ body }) => {
         if (channels[ channel ].is_tv) {
           body = body.replace(/chunklist_b640000_slpt.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=640000&proxy=${proxy}`)
