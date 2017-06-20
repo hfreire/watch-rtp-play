@@ -29,8 +29,9 @@ describe('Playlist', () => {
     const proxy = false
     const query = { channel, proxy }
     const host = 'my-host'
-    const info = { host, protocol: 'http' }
-    const request = { query, headers: {}, info }
+    const connection = { info: { protocol: 'http' } }
+    const info = { host }
+    const request = { query, headers: {}, info, connection }
     let reply
     const playlistResponse = { body: readFileSync(join(__dirname, './tv-playlist-response-ok.m3u8')).toString() }
 
@@ -69,8 +70,9 @@ describe('Playlist', () => {
     const proxy = false
     const query = { channel, proxy }
     const host = 'my-host'
-    const info = { host, protocol: 'http' }
-    const request = { query, headers: {}, info }
+    const connection = { info: { protocol: 'http' } }
+    const info = { host }
+    const request = { query, headers: {}, info, connection }
     let reply
     const error = new Error('my-message')
 
@@ -115,8 +117,9 @@ describe('Playlist', () => {
     const proxy = false
     const query = { channel, proxy }
     const host = 'my-host'
-    const info = { host, protocol: 'http' }
-    const request = { query, headers: {}, info }
+    const connection = { info: { protocol: 'http' } }
+    const info = { host }
+    const request = { query, headers: {}, info, connection }
     let reply
     const playlistResponse = { body: readFileSync(join(__dirname, './radio-playlist-response-ok.m3u8')).toString() }
 
@@ -155,8 +158,9 @@ describe('Playlist', () => {
     const proxy = false
     const query = { channel, proxy }
     const host = 'my-host'
+    const connection = { info: { protocol: 'http' } }
     const info = { host }
-    const request = { query, headers: {}, info }
+    const request = { query, headers: {}, info, connection }
     let reply
     const error = new Error('my-message')
 
