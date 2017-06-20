@@ -21,7 +21,7 @@ class Playlist extends Route {
     super('GET', '/playlist.m3u8', 'Playlist', 'Returns a playlist')
   }
 
-  handler ({ query, headers, info }, reply) {
+  handler ({ query, headers, info, connection }, reply) {
     const { channel, proxy = false } = query
 
     if (!channels[ channel ]) {
@@ -31,7 +31,7 @@ class Playlist extends Route {
     }
 
     const host = info.host
-    const proto = headers[ 'x-forwarded-proto' ] || info.protocol
+    const proto = headers[ 'x-forwarded-proto' ] || connection.info.protocol
 
     const baseUrl = `${proto}://${host}`
     let url
