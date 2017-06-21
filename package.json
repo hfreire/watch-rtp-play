@@ -21,7 +21,7 @@
     "request": "2.81.0",
     "serverful": "1.1.4",
     "socks5-http-client": "1.0.2",
-    "socks5-https-client": "1.2.0"
+    "socks5-https-client": "1.2.1"
   },
   "devDependencies": {
     "chai": "4.0.2",
