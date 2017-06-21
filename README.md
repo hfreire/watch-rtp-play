@@ -43,11 +43,12 @@ castnow http://192.168.0.1:4543/playlist.m3u8?channel=rtp1
 #### Available environment variables
 Variable | Description | Required | Default value
 :---:|:---:|:---:|:---:
-PORT | The port to be used by the HTTP server | false | `3000`
+PORT | The port to be used by the HTTP server | false | `4543`
 API_KEYS | The secret keys that should be used when securing endpoints | false | `undefined`
+SO_TIMEOUT | TCP socket connection timeout | false | `120000`
+LOG_LEVEL | The log level verbosity | false | `info`
 ENVIRONMENT | The environment the app is running on | false | `undefined`
 ROLLBAR_API_KEY | The server API key used to talk with Rollbar | false | `undefined`
-SO_TIMEOUT | TCP socket connection timeout | false | `120000`
 
 ### How to build
 Clone the GitHub repo
