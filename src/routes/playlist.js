@@ -46,8 +46,7 @@ class Playlist extends Route {
     return HTTPRequest.get(url, _headers, proxy)
       .then(({ body }) => {
         if (channels[ channel ].is_tv) {
-          body = body.replace(/chunklist_b640000_slpt.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=640000&proxy=${proxy}`)
-          body = body.replace(/chunklist_b340000_slpt.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=340000&proxy=${proxy}`)
+          body = body.replace(/chunklist_b(\d+)_slpt.m3u8/g, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=$1&proxy=${proxy}`)
         } else {
           body = body.replace(/chunklist_DVR.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&proxy=${proxy}`)
         }
