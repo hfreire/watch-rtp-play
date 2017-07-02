@@ -15,17 +15,20 @@ ENV VERSION_BUILD_DATE $VERSION_BUILD_DATE
 
 ENV HOME /opt/$NAME
 
-RUN apt-get update &&\
-    apt-get install -y git &&\
-    apt-get clean
-
 # Create app directory
 RUN mkdir -p $HOME
 WORKDIR $HOME
 
+RUN apt-get update &&\
+    apt-get install -y git
+    
 # Install app dependencies
 COPY package.json $HOME
 RUN npm install --production
+
+RUN apt-get remove --purge -y git &&\
+    apt-get autoremove --purge -y &&\
+    apt-get clean
 
 # Bundle app source
 COPY src $HOME/src
