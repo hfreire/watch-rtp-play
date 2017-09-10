@@ -12,7 +12,7 @@ const Boom = require('boom')
 
 const Logger = require('modern-logger')
 
-const HTTPRequest = require('../http-request')
+const Request = require('../rtp-play-request')
 const channels = require('../channels.json')
 
 class Chunklist extends Route {
@@ -41,7 +41,9 @@ class Chunklist extends Route {
       url = `${baseUrl}/chunklist_DVR.m3u8`
     }
 
-    return HTTPRequest.get(url, headers, proxy)
+    const options = { url, headers, tor: proxy }
+
+    return Request.get(options)
       .then(({ body }) => {
         body = body.replace(/,\n/g, `,\n${baseUrl}/`)
 

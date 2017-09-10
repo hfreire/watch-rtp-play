@@ -10,11 +10,11 @@ const { join } = require('path')
 
 describe('Playlist', () => {
   let subject
-  let HTTPRequest
+  let Request
   let Logger
 
   before(() => {
-    HTTPRequest = td.object([ 'get' ])
+    Request = td.object([ 'get' ])
 
     Logger = td.object([ 'error' ])
   })
@@ -32,6 +32,7 @@ describe('Playlist', () => {
     const connection = { info: { protocol: 'http' } }
     const info = { host }
     const request = { query, headers: {}, info, connection }
+    const options = { url, headers, tor: proxy }
     let reply
     const playlistResponse = { body: readFileSync(join(__dirname, './tv-playlist-response-ok.m3u8')).toString() }
 
@@ -42,16 +43,16 @@ describe('Playlist', () => {
 
       reply = td.function()
 
-      td.replace('../../src/http-request', HTTPRequest)
-      td.when(HTTPRequest.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenResolve(playlistResponse)
+      td.replace('../../src/rtp-play-request', Request)
+      td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenResolve(playlistResponse)
 
       subject = require('../../src/routes/playlist')
     })
 
-    it('should call HTTPRequest get', () => {
+    it('should call request get', () => {
       subject.handler(request, reply)
 
-      td.verify(HTTPRequest.get(url, headers, proxy), { times: 1 })
+      td.verify(Request.get(options), { times: 1 })
     })
 
     it('should reply with a modified playlist', () => {
@@ -83,8 +84,8 @@ describe('Playlist', () => {
 
       reply = td.function()
 
-      td.replace('../../src/http-request', HTTPRequest)
-      td.when(HTTPRequest.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenReject(error)
+      td.replace('../../src/rtp-play-request', Request)
+      td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenReject(error)
 
       td.replace('modern-logger', Logger)
 
@@ -120,6 +121,7 @@ describe('Playlist', () => {
     const connection = { info: { protocol: 'http' } }
     const info = { host }
     const request = { query, headers: {}, info, connection }
+    const options = { url, headers, tor: proxy }
     let reply
     const playlistResponse = { body: readFileSync(join(__dirname, './radio-playlist-response-ok.m3u8')).toString() }
 
@@ -130,16 +132,16 @@ describe('Playlist', () => {
 
       reply = td.function()
 
-      td.replace('../../src/http-request', HTTPRequest)
-      td.when(HTTPRequest.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenResolve(playlistResponse)
+      td.replace('../../src/rtp-play-request', Request)
+      td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenResolve(playlistResponse)
 
       subject = require('../../src/routes/playlist')
     })
 
-    it('should call HTTPRequest get', () => {
+    it('should call request get', () => {
       subject.handler(request, reply)
 
-      td.verify(HTTPRequest.get(url, headers, proxy), { times: 1 })
+      td.verify(Request.get(options), { times: 1 })
     })
 
     it('should reply with a modified playlist', () => {
@@ -171,8 +173,8 @@ describe('Playlist', () => {
 
       reply = td.function()
 
-      td.replace('../../src/http-request', HTTPRequest)
-      td.when(HTTPRequest.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenReject(error)
+      td.replace('../../src/rtp-play-request', Request)
+      td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenReject(error)
 
       td.replace('modern-logger', Logger)
 

@@ -12,7 +12,7 @@ const Boom = require('boom')
 
 const Logger = require('modern-logger')
 
-const HTTPRequest = require('../http-request')
+const Request = require('../rtp-play-request')
 
 const channels = require('../channels.json')
 
@@ -43,7 +43,9 @@ class Playlist extends Route {
 
     const _headers = { 'Referer': `http://www.rtp.pt/play/direto/${channel}` }
 
-    return HTTPRequest.get(url, _headers, proxy)
+    const options = { url, headers: _headers, tor: proxy }
+
+    return Request.get(options)
       .then(({ body }) => {
         if (channels[ channel ].is_tv) {
           body = body.replace(/chunklist_b(\d+)_slpt.m3u8/g, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=$1&proxy=${proxy}`)
