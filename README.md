@@ -6,6 +6,8 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/hfreire/watch-rtp-play.svg)](https://greenkeeper.io/)
 [![](https://img.shields.io/github/release/hfreire/watch-rtp-play.svg)](https://github.com/hfreire/watch-rtp-play/releases)
 [![](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Docker Stars](https://img.shields.io/docker/stars/hfreire/watch-rtp-play.svg)](https://hub.docker.com/r/hfreire/watch-rtp-play/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/hfreire/watch-rtp-play.svg)](https://hub.docker.com/r/hfreire/watch-rtp-play/)
 
 Watch 8 TV and 14 radio channels on any device that can play [HTTP Live Streaming](https://en.wikipedia.org/wiki/HTTP_Live_Streaming).
 
