@@ -15,11 +15,9 @@ class RtpPlayRequest extends Request {
   constructor (options) {
     super(options)
 
-    Health.addCheck('rtp-play', () => new Promise((resolve, reject) => {
+    Health.addCheck('rtp-play', () => Promise.try(() => {
       if (this.circuitBreaker.isOpen()) {
-        return reject(new Error(`circuit breaker is open`))
-      } else {
-        return resolve()
+        throw new Error(`circuit breaker is open`)
       }
     }))
   }
