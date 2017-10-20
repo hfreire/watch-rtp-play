@@ -1,4 +1,4 @@
-FROM node:6.11.0-slim
+FROM node:6.11.3
 
 MAINTAINER hugo@exec.sh
 
@@ -20,20 +20,32 @@ WORKDIR $HOME
 
 # Install app runtime and build dependencies
 RUN apt-get update &&\
-    apt-get install -y git
+    apt-get install -y libgtk2.0-0 libgconf-2-4 libasound2 libxtst6 libxss1 libnss3 xvfb &&\
+    apt-get install -y build-essential git python &&\
+    apt-get clean
 COPY package.json $HOME
-RUN npm install --production
+COPY tsconfig.json $HOME
+COPY webpack.config.js $HOME
+RUN npm install
 
 # Copy app source
 COPY src $HOME/src
 
-# Remove app build dependencies
-RUN apt-get remove --purge -y git &&\
-    apt-get autoremove --purge -y &&\
-    apt-get clean
+# Compile app source
+RUN npm run compile
 
-COPY share/docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Remove app build dependencies
+RUN npm prune --production
+RUN apt-get remove --purge -y build-essential git python &&\
+    apt-get autoremove --purge -y
+
+COPY share/docker/start.sh /start.sh
+RUN chmod +x /start.sh
+COPY share/docker/test.sh /test.sh
+RUN chmod +x /test.sh
 
 EXPOSE 3000
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT [ "/start.sh" ]
+
+HEALTHCHECK --start-period=10s --interval=5m --timeout=3s \
+  CMD nc -z localhost 3000 || exit 1

@@ -11,7 +11,7 @@
 
 Watch 8 TV and 14 radio channels on any device that can play [HTTP Live Streaming](https://en.wikipedia.org/wiki/HTTP_Live_Streaming).
 
-<p align="center"><img src="share/github/vlc.gif" width="620"></p>
+<p align="center"><img src="share/github/overview.gif" width="620"></p>
 
 ### Features
 * 8 TV channels :tv: 
@@ -61,11 +61,6 @@ git clone https://github.com/hfreire/watch-rtp-play.git
 Change current directory
 ```
 cd watch-rtp-play
-```
-
-Install dependencies
-```
-npm install
 ```
 
 Run the NPM script that will build the Docker image
