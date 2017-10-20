@@ -14,6 +14,8 @@ describe('Server', () => {
     serverful.Serverful = td.constructor([])
   })
 
+  after(() => td.reset())
+
   describe('when exporting', () => {
     beforeEach(() => {
       td.replace('serverful', serverful)
