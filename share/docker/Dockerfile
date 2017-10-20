@@ -1,4 +1,4 @@
-FROM node:6.11.3
+FROM node:6.11.3-slim
 
 MAINTAINER hugo@exec.sh
 
@@ -20,24 +20,17 @@ WORKDIR $HOME
 
 # Install app runtime and build dependencies
 RUN apt-get update &&\
-    apt-get install -y libgtk2.0-0 libgconf-2-4 libasound2 libxtst6 libxss1 libnss3 xvfb &&\
-    apt-get install -y build-essential git python &&\
-    apt-get clean
+    apt-get install -y git
 COPY package.json $HOME
-COPY tsconfig.json $HOME
-COPY webpack.config.js $HOME
-RUN npm install
+RUN npm install --production
 
 # Copy app source
 COPY src $HOME/src
 
-# Compile app source
-RUN npm run compile
-
 # Remove app build dependencies
-RUN npm prune --production
-RUN apt-get remove --purge -y build-essential git python &&\
-    apt-get autoremove --purge -y
+RUN apt-get remove --purge -y git &&\
+    apt-get autoremove --purge -y &&\
+    apt-get clean
 
 COPY share/docker/start.sh /start.sh
 RUN chmod +x /start.sh
