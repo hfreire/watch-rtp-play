@@ -10,10 +10,14 @@ const { join } = require('path')
 
 describe('Playlist', () => {
   let subject
+  let serverful
   let Request
   let Logger
 
   before(() => {
+    serverful = td.object([])
+    serverful.Route = td.constructor([])
+
     Request = td.object([ 'get' ])
 
     Logger = td.object([ 'error' ])
@@ -37,6 +41,8 @@ describe('Playlist', () => {
     const playlistResponse = { body: readFileSync(join(__dirname, './tv-playlist-response-ok.m3u8')).toString() }
 
     beforeEach(() => {
+      td.replace('serverful', serverful)
+
       channels = td.object([ channel ])
       td.replace('../../src/channels.json', channels)
       channels[ channel ] = { is_tv: true }
@@ -78,6 +84,8 @@ describe('Playlist', () => {
     const error = new Error('my-message')
 
     beforeEach(() => {
+      td.replace('serverful', serverful)
+
       channels = td.object([ channel ])
       td.replace('../../src/channels.json', channels)
       channels[ channel ] = { is_tv: true }
@@ -126,6 +134,8 @@ describe('Playlist', () => {
     const playlistResponse = { body: readFileSync(join(__dirname, './radio-playlist-response-ok.m3u8')).toString() }
 
     beforeEach(() => {
+      td.replace('serverful', serverful)
+
       channels = td.object([ channel ])
       td.replace('../../src/channels.json', channels)
       channels[ channel ] = { is_tv: false, name: channelName }
@@ -167,6 +177,8 @@ describe('Playlist', () => {
     const error = new Error('my-message')
 
     beforeEach(() => {
+      td.replace('serverful', serverful)
+
       channels = td.object([ channel ])
       td.replace('../../src/channels.json', channels)
       channels[ channel ] = { is_tv: false }
@@ -209,6 +221,8 @@ describe('Playlist', () => {
     let reply
 
     beforeEach(() => {
+      td.replace('serverful', serverful)
+
       channels = td.object([])
       td.replace('../../src/channels.json', channels)
 
@@ -235,6 +249,8 @@ describe('Playlist', () => {
 
   describe('when configuring authentication', () => {
     beforeEach(() => {
+      td.replace('serverful', serverful)
+
       subject = require('../../src/routes/playlist')
     })
 
@@ -247,6 +263,8 @@ describe('Playlist', () => {
 
   describe('when configuring validate', () => {
     beforeEach(() => {
+      td.replace('serverful', serverful)
+
       subject = require('../../src/routes/playlist')
     })
 
@@ -260,6 +278,8 @@ describe('Playlist', () => {
 
   describe('when configuring cors', () => {
     beforeEach(() => {
+      td.replace('serverful', serverful)
+
       subject = require('../../src/routes/playlist')
     })
 
