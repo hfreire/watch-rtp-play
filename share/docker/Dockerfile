@@ -22,7 +22,8 @@ WORKDIR $HOME
 RUN apt-get update &&\
     apt-get install -y git
 COPY package.json $HOME
-RUN npm install --production
+COPY share/docker/.npmrc $HOME
+RUN npm install
 
 # Copy app source
 COPY src $HOME/src
@@ -31,6 +32,8 @@ COPY src $HOME/src
 RUN apt-get remove --purge -y git &&\
     apt-get autoremove --purge -y &&\
     apt-get clean
+RUN npm prune --production
+RUN rm -f $HOME/.npmrc
 
 COPY share/docker/start.sh /start.sh
 RUN chmod +x /start.sh
