@@ -8,25 +8,25 @@
 describe('RTP Play Request', () => {
   let subject
   let Health
-  let RequestOnSteroids
+  let Request
 
   before(() => {
     Health = td.object([ 'addCheck' ])
 
-    RequestOnSteroids = td.constructor([])
+    Request = td.constructor([])
   })
 
   afterEach(() => td.reset())
 
   describe('when exporting', () => {
     beforeEach(() => {
-      td.replace('request-on-steroids', RequestOnSteroids)
+      td.replace('request-on-steroids', Request)
 
       subject = require('../src/rtp-play-request')
     })
 
     it('should be instance of request-on-steroids', () => {
-      subject.should.be.instanceOf(RequestOnSteroids)
+      subject.should.be.instanceOf(Request)
     })
   })
 
@@ -45,7 +45,7 @@ describe('RTP Play Request', () => {
 
   describe('when constructing', () => {
     beforeEach(() => {
-      td.replace('request-on-steroids', RequestOnSteroids)
+      td.replace('request-on-steroids', Request)
 
       td.replace('health-checkup', Health)
 
