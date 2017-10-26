@@ -41,7 +41,7 @@ describe('RTP Play Request', () => {
       subject.should.have.property('post')
       subject.post.should.be.instanceOf(Function)
     })
-    
+
     it('should create a request-on-steroids with circuitBreaker function', () => {
       subject.should.have.property('circuitBreaker')
       subject.post.should.be.instanceOf(Function)
