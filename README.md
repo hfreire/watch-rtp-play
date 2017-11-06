@@ -9,7 +9,7 @@
 [![Docker Stars](https://img.shields.io/docker/stars/hfreire/watch-rtp-play.svg)](https://hub.docker.com/r/hfreire/watch-rtp-play/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/hfreire/watch-rtp-play.svg)](https://hub.docker.com/r/hfreire/watch-rtp-play/)
 
-Watch 8 TV and 14 radio channels on any device that can play [HTTP Live Streaming](https://en.wikipedia.org/wiki/HTTP_Live_Streaming).
+> Watch 8 TV and 14 radio channels on any device that can play [HTTP Live Streaming](https://en.wikipedia.org/wiki/HTTP_Live_Streaming).
 
 <p align="center"><img src="share/github/overview.gif" width="620"></p>
 
