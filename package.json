@@ -18,7 +18,7 @@
     "lodash": "4.17.4",
     "modern-logger": "1.5.3",
     "request-on-steroids": "1.1.10",
-    "serverful": "1.1.21"
+    "serverful": "1.1.22"
   },
   "devDependencies": {
     "chai": "4.1.2",
