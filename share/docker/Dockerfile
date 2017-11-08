@@ -1,4 +1,4 @@
-FROM node:6.11.3-slim
+FROM node:8.9.0-slim
 
 MAINTAINER hugo@exec.sh
 
@@ -20,7 +20,7 @@ WORKDIR $HOME
 
 # Install app runtime and build dependencies
 RUN apt-get update &&\
-    apt-get install -y git
+    apt-get install -y git netcat
 COPY package.json $HOME
 COPY share/docker/.npmrc $HOME
 RUN npm install
