@@ -16,6 +16,7 @@
 ### Features
 * 8 TV channels :tv: 
 * 14 radio channels :radio:
+* Uses [request-on-steroids](https://github.com/hfreire/request-on-steroids) to rate limit, retry and circuit break outgoing HTTP requests :white_check_mark:
 * Launch :rocket: inside a Docker container :whale: so you don't need to manage the dependencies :raised_hands: :white_check_mark:
 * Quickly deploy :runner: and easily scale :two_men_holding_hands: the number of servers by using Rancher :white_check_mark:
 
