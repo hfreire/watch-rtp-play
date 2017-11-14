@@ -7,13 +7,13 @@
 
 describe('RTP Play Request', () => {
   let subject
-  let Health
   let Request
+  let Health
 
   before(() => {
-    Health = td.object([ 'addCheck' ])
-
     Request = td.constructor([])
+
+    Health = td.object([ 'addCheck' ])
   })
 
   afterEach(() => td.reset())
@@ -55,6 +55,15 @@ describe('RTP Play Request', () => {
       td.replace('health-checkup', Health)
 
       subject = require('../src/rtp-play-request')
+    })
+
+    it('should construct request with options', () => {
+      const captor = td.matchers.captor()
+
+      td.verify(new Request(captor.capture()), { times: 1 })
+
+      const options = captor.value
+      options.should.have.nested.property('perseverance.retry.max_tries', 2)
     })
 
     it('should add rtp play health check', () => {
