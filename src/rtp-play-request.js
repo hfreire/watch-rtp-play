@@ -20,7 +20,7 @@ const defaultOptions = {
 
 class RtpPlayRequest extends Request {
   constructor (options = {}) {
-    super(_.defaultsDeep(options, defaultOptions))
+    super(_.defaultsDeep({}, options, defaultOptions))
 
     Health.addCheck('rtp-play', () => Promise.try(() => {
       if (this.circuitBreaker.isOpen()) {
