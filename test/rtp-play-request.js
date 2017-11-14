@@ -57,7 +57,7 @@ describe('RTP Play Request', () => {
       subject = require('../src/rtp-play-request')
     })
 
-    it('should construct request with options', () => {
+    it('should construct request instance with default options', () => {
       const captor = td.matchers.captor()
 
       td.verify(new Request(captor.capture()), { times: 1 })
