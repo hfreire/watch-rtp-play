@@ -43,6 +43,9 @@ Cast RTP1 to Chromecast (use [castnow](https://github.com/xat/castnow))
 castnow http://192.168.0.1:4543/playlist.m3u8?channel=rtp1
 ```
 
+#### Available REST API endpoints
+Swagger documentation available at `http://localhost:4543/docs`.
+
 #### Available environment variables
 Variable | Description | Required | Default value
 :---:|:---:|:---:|:---:
