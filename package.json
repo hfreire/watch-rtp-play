@@ -2,6 +2,9 @@
   "name": "watch-rtp-play",
   "description": "Watch and listen RTP Play without a browser",
   "version": "0.0.0",
+  "engines": {
+    "node": ">= 6.0.0"
+  },
   "author": "Hugo Freire <hugo@exec.sh>",
   "license": "MIT",
   "repository": {
@@ -47,7 +50,8 @@
   },
   "config": {
     "pre-git": {
-      "commit-msg": "conventional"
+      "commit-msg": "conventional",
+      "allow-untracked-files": true
     }
   },
   "release": {
