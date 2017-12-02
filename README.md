@@ -1,11 +1,8 @@
 # :tv: Watch and :radio: listen 🇵🇹 RTP Play without a :computer: browser
 
-[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Build Status](https://travis-ci.org/hfreire/watch-rtp-play.svg?branch=master)](https://travis-ci.org/hfreire/watch-rtp-play)
 [![Coverage Status](https://coveralls.io/repos/github/hfreire/watch-rtp-play/badge.svg?branch=master)](https://coveralls.io/github/hfreire/watch-rtp-play?branch=master)
-[![Greenkeeper badge](https://badges.greenkeeper.io/hfreire/watch-rtp-play.svg)](https://greenkeeper.io/)
 [![](https://img.shields.io/github/release/hfreire/watch-rtp-play.svg)](https://github.com/hfreire/watch-rtp-play/releases)
-[![](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Docker Stars](https://img.shields.io/docker/stars/hfreire/watch-rtp-play.svg)](https://hub.docker.com/r/hfreire/watch-rtp-play/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/hfreire/watch-rtp-play.svg)](https://hub.docker.com/r/hfreire/watch-rtp-play/)
 
@@ -71,3 +68,11 @@ Run the NPM script that will build the Docker image
 ```
 npm run build
 ```
+
+### How to contribute
+You can contribute either with code (e.g., new features, bug fixes and documentation) or by [donating 5 EUR](https://paypal.me/hfreire/5). You can read the [contributing guidelines](./docs/CONTRIBUTING.md) for instructions on how to contribute with code. 
+
+All donation proceedings will go to the [Sverige för UNHCR](https://sverigeforunhcr.se), a swedish partner of the [UNHCR - The UN Refugee Agency](http://www.unhcr.org), a global organisation dedicated to saving lives, protecting rights and building a better future for refugees, forcibly displaced communities and stateless people.
+
+### License
+Read the [license](./LICENSE.md) for permissions and limitations.
