@@ -19,7 +19,7 @@
     "bluebird": "3.5.1",
     "health-checkup": "1.0.18",
     "lodash": "4.17.4",
-    "modern-logger": "1.5.5",
+    "modern-logger": "1.5.6",
     "request-on-steroids": "1.1.17",
     "serverful": "1.1.25"
   },
@@ -27,7 +27,7 @@
     "chai": "4.1.2",
     "chai-as-promised": "7.1.1",
     "coveralls": "2.13.3",
-    "eslint": "4.11.0",
+    "eslint": "4.12.1",
     "eslint-config-hfreire": "1.0.10",
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-json": "1.2.0",
