@@ -52,7 +52,7 @@ class Chunklist extends Route {
       .catch((error) => {
         Logger.error(error)
 
-        reply(Boom.badImplementation(error.message, error))
+        reply(Boom.badImplementation(error))
       })
   }
 

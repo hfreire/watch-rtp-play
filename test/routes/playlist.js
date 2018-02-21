@@ -11,12 +11,18 @@ const { join } = require('path')
 describe('Playlist', () => {
   let subject
   let serverful
+  let Joi
+  let Boom
   let Request
   let Logger
 
   before(() => {
     serverful = td.object([])
     serverful.Route = td.constructor([])
+
+    Joi = td.object([ 'string', 'number', 'boolean' ])
+
+    Boom = td.object([ 'badImplementation', 'badRequest' ])
 
     Request = td.object([ 'get' ])
 
@@ -27,7 +33,6 @@ describe('Playlist', () => {
 
   describe('when handling a request for a TV playlist', () => {
     const channel = 'my-channel'
-    let channels
     const url = `https://streaming-live.rtp.pt/liverepeater/smil:${channel}.smil/playlist.m3u`
     const headers = { 'Referer': `http://www.rtp.pt/play/direto/${channel}` }
     const proxy = false
@@ -37,17 +42,25 @@ describe('Playlist', () => {
     const info = { host }
     const request = { query, headers: {}, info, connection }
     const options = { url, headers, tor: proxy }
-    let reply
     const playlistResponse = { body: readFileSync(join(__dirname, './tv-playlist-response-ok.m3u8')).toString() }
+    let reply
+    let channels
+
+    before(() => {
+      reply = td.function()
+
+      channels = td.object([ channel ])
+      channels[ channel ] = { is_tv: true }
+    })
 
     beforeEach(() => {
       td.replace('serverful', serverful)
 
-      channels = td.object([ channel ])
-      td.replace('../../src/channels.json', channels)
-      channels[ channel ] = { is_tv: true }
+      td.replace('joi', Joi)
 
-      reply = td.function()
+      td.replace('boom', Boom)
+
+      td.replace('../../src/channels.json', channels)
 
       td.replace('../../src/rtp-play-request', Request)
       td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenResolve(playlistResponse)
@@ -73,24 +86,31 @@ describe('Playlist', () => {
 
   describe('when handling a request that fails for a TV playlist', () => {
     const channel = 'my-channel'
-    let channels
     const proxy = false
     const query = { channel, proxy }
     const host = 'my-host'
     const connection = { info: { protocol: 'http' } }
     const info = { host }
     const request = { query, headers: {}, info, connection }
-    let reply
     const error = new Error('my-message')
+    let reply
+    let channels
+
+    before(() => {
+      reply = td.function()
+
+      channels = td.object([ channel ])
+      channels[ channel ] = { is_tv: true }
+    })
 
     beforeEach(() => {
       td.replace('serverful', serverful)
 
-      channels = td.object([ channel ])
-      td.replace('../../src/channels.json', channels)
-      channels[ channel ] = { is_tv: true }
+      td.replace('joi', Joi)
 
-      reply = td.function()
+      td.replace('boom', Boom)
+
+      td.replace('../../src/channels.json', channels)
 
       td.replace('../../src/rtp-play-request', Request)
       td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenReject(error)
@@ -100,19 +120,10 @@ describe('Playlist', () => {
       subject = require('../../src/routes/playlist')
     })
 
-    it('should return 500', () => {
+    it('should call boom bad implementation', () => {
       return subject.handler(request, reply)
         .then(() => {
-          const captor = td.matchers.captor()
-
-          td.verify(reply(captor.capture()), { times: 1 })
-
-          const _error = captor.value
-          _error.should.have.property('isBoom')
-          _error.should.be.instanceOf(Error)
-          _error.isBoom.should.be.equal(true)
-          _error.message.should.contain(error.message)
-          _error.output.statusCode.should.be.equal(500)
+          td.verify(Boom.badImplementation(error), { times: 1 })
         })
     })
   })
@@ -120,7 +131,6 @@ describe('Playlist', () => {
   describe('when handling a request for a radio playlist', () => {
     const channel = 'my-channel'
     const channelName = 'my-channel-name'
-    let channels
     const url = `http://streaming-live.rtp.pt/liveradio/${channelName}/playlist.m3u8?DVR`
     const headers = { 'Referer': `http://www.rtp.pt/play/direto/${channel}` }
     const proxy = false
@@ -130,17 +140,25 @@ describe('Playlist', () => {
     const info = { host }
     const request = { query, headers: {}, info, connection }
     const options = { url, headers, tor: proxy }
-    let reply
     const playlistResponse = { body: readFileSync(join(__dirname, './radio-playlist-response-ok.m3u8')).toString() }
+    let reply
+    let channels
+
+    before(() => {
+      reply = td.function()
+
+      channels = td.object([ channel ])
+      channels[ channel ] = { is_tv: false, name: channelName }
+    })
 
     beforeEach(() => {
       td.replace('serverful', serverful)
 
-      channels = td.object([ channel ])
-      td.replace('../../src/channels.json', channels)
-      channels[ channel ] = { is_tv: false, name: channelName }
+      td.replace('joi', Joi)
 
-      reply = td.function()
+      td.replace('boom', Boom)
+
+      td.replace('../../src/channels.json', channels)
 
       td.replace('../../src/rtp-play-request', Request)
       td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenResolve(playlistResponse)
@@ -166,24 +184,31 @@ describe('Playlist', () => {
 
   describe('when handling a request that fails for a radio playlist', () => {
     const channel = 'my-channel'
-    let channels
     const proxy = false
     const query = { channel, proxy }
     const host = 'my-host'
     const connection = { info: { protocol: 'http' } }
     const info = { host }
     const request = { query, headers: {}, info, connection }
-    let reply
     const error = new Error('my-message')
+    let reply
+    let channels
+
+    before(() => {
+      reply = td.function()
+
+      channels = td.object([ channel ])
+      channels[ channel ] = { is_tv: false }
+    })
 
     beforeEach(() => {
       td.replace('serverful', serverful)
 
-      channels = td.object([ channel ])
-      td.replace('../../src/channels.json', channels)
-      channels[ channel ] = { is_tv: false }
+      td.replace('joi', Joi)
 
-      reply = td.function()
+      td.replace('boom', Boom)
+
+      td.replace('../../src/channels.json', channels)
 
       td.replace('../../src/rtp-play-request', Request)
       td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenReject(error)
@@ -193,63 +218,60 @@ describe('Playlist', () => {
       subject = require('../../src/routes/playlist')
     })
 
-    it('should return 500', () => {
+    it('should call boom bad implementation', () => {
       return subject.handler(request, reply)
         .then(() => {
-          const captor = td.matchers.captor()
-
-          td.verify(reply(captor.capture()), { times: 1 })
-
-          const _error = captor.value
-          _error.should.have.property('isBoom')
-          _error.should.be.instanceOf(Error)
-          _error.isBoom.should.be.equal(true)
-          _error.message.should.contain(error.message)
-          _error.output.statusCode.should.be.equal(500)
+          td.verify(Boom.badImplementation(error), { times: 1 })
         })
     })
   })
 
   describe('when handling a request for a playlist that does not exist', () => {
     const channel = 'my-channel'
-    let channels
     const proxy = false
     const query = { channel, proxy }
     const host = 'my-host'
     const info = { host }
     const request = { query, headers: {}, info }
     let reply
+    let channels
+
+    before(() => {
+      reply = td.function()
+
+      channels = td.object([])
+    })
 
     beforeEach(() => {
       td.replace('serverful', serverful)
 
-      channels = td.object([])
+      td.replace('joi', Joi)
+
+      td.replace('boom', Boom)
+
       td.replace('../../src/channels.json', channels)
 
-      reply = td.function()
+      td.replace('../../src/rtp-play-request', Request)
 
       subject = require('../../src/routes/playlist')
     })
 
-    it('should return 400', () => {
+    it('should call boom bad implementation', () => {
       subject.handler(request, reply)
 
-      const captor = td.matchers.captor()
-
-      td.verify(reply(captor.capture()), { times: 1 })
-
-      const error = captor.value
-      error.should.have.property('isBoom')
-      error.should.be.instanceOf(Error)
-      error.isBoom.should.be.equal(true)
-      error.message.should.contain(error.message)
-      error.output.statusCode.should.be.equal(400)
+      td.verify(Boom.badRequest(), { times: 1 })
     })
   })
 
   describe('when configuring authentication', () => {
     beforeEach(() => {
       td.replace('serverful', serverful)
+
+      td.replace('joi', Joi)
+
+      td.replace('boom', Boom)
+
+      td.replace('../../src/rtp-play-request', Request)
 
       subject = require('../../src/routes/playlist')
     })
@@ -262,8 +284,25 @@ describe('Playlist', () => {
   })
 
   describe('when configuring validate', () => {
+    let type
+
+    before(() => {
+      type = td.object([ 'required', 'optional', 'description' ])
+    })
+
     beforeEach(() => {
       td.replace('serverful', serverful)
+
+      td.replace('joi', Joi)
+      td.when(Joi.string()).thenReturn(type)
+      td.when(Joi.number()).thenReturn(type)
+      td.when(Joi.boolean()).thenReturn(type)
+      td.when(type.required()).thenReturn(type)
+      td.when(type.optional()).thenReturn(type)
+
+      td.replace('boom', Boom)
+
+      td.replace('../../src/rtp-play-request', Request)
 
       subject = require('../../src/routes/playlist')
     })
@@ -279,6 +318,12 @@ describe('Playlist', () => {
   describe('when configuring cors', () => {
     beforeEach(() => {
       td.replace('serverful', serverful)
+
+      td.replace('joi', Joi)
+
+      td.replace('boom', Boom)
+
+      td.replace('../../src/rtp-play-request', Request)
 
       subject = require('../../src/routes/playlist')
     })
