@@ -20,7 +20,7 @@
     "health-checkup": "1.0.19",
     "lodash": "4.17.5",
     "modern-logger": "1.5.15",
-    "request-on-steroids": "1.1.23",
+    "request-on-steroids": "1.1.24",
     "serverful": "1.1.26"
   },
   "devDependencies": {
@@ -37,7 +37,7 @@
     "eslint-plugin-standard": "3.0.1",
     "eslint-plugin-unicorn": "4.0.3",
     "istanbul": "0.4.5",
-    "mocha": "5.1.0",
+    "mocha": "5.1.1",
     "semantic-release": "15.1.7",
     "pre-git": "3.17.0",
     "testdouble": "3.7.0"
