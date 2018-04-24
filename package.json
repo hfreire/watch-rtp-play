@@ -18,7 +18,7 @@
   "dependencies": {
     "bluebird": "3.5.1",
     "health-checkup": "1.0.19",
-    "lodash": "4.17.5",
+    "lodash": "4.17.9",
     "modern-logger": "1.5.15",
     "request-on-steroids": "1.1.25",
     "serverful": "1.1.26"
