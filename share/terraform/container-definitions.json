@@ -1,0 +1,34 @@
+[
+  {
+    "name": "watch-rtp-play",
+    "image": "hfreire/watch-rtp-play:latest",
+    "cpu": 10,
+    "memory": 128,
+    "links": [],
+    "portMappings": [
+      {
+        "containerPort": 3000,
+        "protocol": "tcp"
+      }
+    ],
+    "essential": true,
+    "entryPoint": [],
+    "command": [],
+    "environment": [
+      {
+        "name": "API_KEYS",
+        "value": "${api_keys}"
+      }
+    ],
+    "mountPoints": [],
+    "volumesFrom": [],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${awslogs-group}",
+        "awslogs-region": "${awslogs-region}",
+        "awslogs-stream-prefix": "${awslogs-stream-prefix}"
+      }
+    }
+  }
+]

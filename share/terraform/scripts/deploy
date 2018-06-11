@@ -1,0 +1,16 @@
+#!/bin/bash
+
+[ -z ${DOMAIN_NAME-} ] && exit 1
+
+pushd $(cd -P -- "$(dirname -- "$0")" && pwd -P)/..
+
+$(which terraform) init
+
+$(which terraform) plan -var "domain_name=${DOMAIN_NAME}"
+
+$(which terraform) apply -auto-approve \
+-var "domain_name=${DOMAIN_NAME}"
+
+popd
+
+exit 0
