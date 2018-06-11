@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Hugo Freire <hugo@exec.sh>.
+ * Copyright (c) 2018, Hugo Freire <hugo@exec.sh>.
  *
  * This source code is licensed under the license found in the
  * LICENSE.md file in the root directory of this source tree.
@@ -257,26 +257,6 @@ describe('Chunklist', () => {
       subject.handler(request, reply)
 
       td.verify(Boom.badRequest(), { times: 1 })
-    })
-  })
-
-  describe('when configuring authentication', () => {
-    beforeEach(() => {
-      td.replace('serverful', serverful)
-
-      td.replace('joi', Joi)
-
-      td.replace('boom', Boom)
-
-      td.replace('../../src/rtp-play-request', Request)
-
-      subject = require('../../src/routes/chunklist')
-    })
-
-    it('should not require authenticate', () => {
-      const auth = subject.auth()
-
-      auth.should.be.equal(false)
     })
   })
 
