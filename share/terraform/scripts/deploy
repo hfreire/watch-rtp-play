@@ -1,15 +1,19 @@
 #!/bin/bash
 
+[ -z ${DOCKER_REPO-} ] && exit 1
 [ -z ${DOMAIN_NAME-} ] && exit 1
 
 pushd $(cd -P -- "$(dirname -- "$0")" && pwd -P)/..
 
 $(which terraform) init
 
-$(which terraform) plan -var "domain_name=${DOMAIN_NAME}"
+$(which terraform) plan \
+-var "docker_repo=${DOCKER_REPO}" \
+-var "domain_name=${DOMAIN_NAME}" || exit 1
 
 $(which terraform) apply -auto-approve \
--var "domain_name=${DOMAIN_NAME}"
+-var "docker_repo=${DOCKER_REPO}" \
+-var "domain_name=${DOMAIN_NAME}" || exit 1
 
 popd
 

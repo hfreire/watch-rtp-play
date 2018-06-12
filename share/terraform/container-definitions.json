@@ -1,7 +1,7 @@
 [
   {
-    "name": "watch-rtp-play",
-    "image": "hfreire/watch-rtp-play:latest",
+    "name": "${name}",
+    "image": "${image}",
     "cpu": 10,
     "memory": 128,
     "links": [],
@@ -17,7 +17,7 @@
     "environment": [
       {
         "name": "API_KEYS",
-        "value": "${api_keys}"
+        "value": "$${api_keys}"
       }
     ],
     "mountPoints": [],
@@ -25,9 +25,9 @@
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "${awslogs-group}",
-        "awslogs-region": "${awslogs-region}",
-        "awslogs-stream-prefix": "${awslogs-stream-prefix}"
+        "awslogs-group": "$${awslogs-group}",
+        "awslogs-region": "$${awslogs-region}",
+        "awslogs-stream-prefix": "$${awslogs-stream-prefix}"
       }
     }
   }
