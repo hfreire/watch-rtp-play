@@ -19,7 +19,7 @@
     "bluebird": "3.5.1",
     "health-checkup": "1.0.19",
     "lodash": "4.17.9",
-    "modern-logger": "1.5.17",
+    "modern-logger": "1.5.19",
     "request-on-steroids": "1.1.28",
     "serverful": "1.2.2"
   },
@@ -38,9 +38,9 @@
     "eslint-plugin-unicorn": "4.0.3",
     "istanbul": "0.4.5",
     "mocha": "5.2.0",
-    "semantic-release": "15.1.8",
-    "pre-git": "3.17.0",
-    "testdouble": "3.7.0"
+    "semantic-release": "15.5.1",
+    "pre-git": "3.17.1",
+    "testdouble": "3.8.1"
   },
   "config": {
     "pre-git": {
@@ -55,7 +55,8 @@
         "npmPublish": false
       },
       "@semantic-release/github"
-    ]
+    ],
+    "analyzeCommits": "simple-commit-message"
   },
   "scripts": {
     "commit": "./node_modules/.bin/commit-wizard",
