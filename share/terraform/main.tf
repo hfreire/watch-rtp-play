@@ -1,3 +1,9 @@
+terraform {
+  required_version = ">= 0.9.3, != 0.9.5"
+
+  backend "s3" {}
+}
+
 provider "aws" {
   region = "${var.aws_region}"
 }
@@ -12,8 +18,7 @@ data "template_file" "container_definitions" {
 }
 
 module "watch-rtp-play" {
-  //source                     = "github.com/antifragile-systems/antifragile-service"
-  source                = "../../../antifragile-service"
+  source                = "github.com/antifragile-systems/antifragile-service"
 
   name                  = "${var.name}"
   domain_name           = "${var.domain_name}"

@@ -20,22 +20,27 @@
 ### How to use
 
 #### Use it in your terminal
-Run the Docker image in a container exposing the port `4543`
+Using it in your terminal requires [Docker](https://www.docker.com) installed in your system.
+
+##### Run the Docker image in a container 
+Detach from the container and expose port `4543`.
 ```
 docker run -d -p "4543:3000" hfreire/watch-rtp-play
 ```
 
-Play RTP1 with ffmpeg player
+##### Play RTP1 with ffmpeg player
 ```
 ffplay http://localhost:4543/playlist.m3u8?channel=rtp1
 ```
 
-AirPlay RTP1 to Kodi (use [kodi.sh gist](https://gist.github.com/hfreire/5c558dc35ee842c32bda1656f87f302b))
+##### AirPlay RTP1 to Kodi
+Use [kodi.sh gist](https://gist.github.com/hfreire/5c558dc35ee842c32bda1656f87f302b) to stream RTP1 to a [Kodi](https://kodi.tv) media player.
 ```
 kodi.sh localhost:36667 http://localhost:4543/playlist.m3u8?channel=rtp1
 ```
 
-Cast RTP1 to Chromecast (use [castnow](https://github.com/xat/castnow))
+##### Cast RTP1 to Chromecast
+Use [castnow](https://github.com/xat/castnow) to stream RTP1 to a [Chromecast](https://www.google.com/chromecast) media player.
 ```
 castnow http://192.168.0.1:4543/playlist.m3u8?channel=rtp1
 ```
@@ -43,7 +48,7 @@ castnow http://192.168.0.1:4543/playlist.m3u8?channel=rtp1
 #### Available REST API endpoints
 Swagger documentation available at `http://localhost:4543/docs`.
 
-#### Available environment variables
+#### Available usage environment variables
 Variable | Description | Required | Default value
 :---:|:---:|:---:|:---:
 PORT | The port to be used by the HTTP server. | false | `3000`
@@ -54,20 +59,49 @@ ENVIRONMENT | The environment the app is running on. | false | `undefined`
 ROLLBAR_API_KEY | The server API key used to talk with Rollbar. | false | `undefined`
 
 ### How to build
-Clone the GitHub repo
+##### Clone the GitHub repo
 ```
 git clone https://github.com/hfreire/watch-rtp-play.git
 ```
 
-Change current directory
+##### Change current directory
 ```
 cd watch-rtp-play
 ```
 
-Run the NPM script that will build the Docker image
+##### Run the NPM script that will build the Docker image
 ```
 npm run build
 ```
+
+### How to deploy
+
+#### Deploy it from your terminal
+Deploying it from your terminal requires [terraform](https://www.terraform.io) installed on your system and an [antifragile infrastructure](https://github.com/antifragile-systems/antifragile-infrastructure) setup available in your [AWS](https://aws.amazon.com) account.
+
+##### Clone the GitHub repo
+```
+git clone https://github.com/hfreire/watch-rtp-play.git
+```
+
+##### Change current directory
+```
+cd watch-rtp-play
+```
+
+##### Run the NPM script that will deploy all functions
+```
+npm run deploy
+```
+
+#### Available deployment environment variables
+Variable | Description | Required | Default value
+:---:|:---:|:---:|:---:
+VERSION | The version of the app. | false | `latest`
+ANTIFRAGILE_STATE_AWS_REGION | The AWS region used for the antifragile state . | false | `undefined`
+ANTIFRAGILE_STATE_AWS_S3_BUCKET | The AWS S3 bucket used for the antifragile state. | false | `undefined`
+ANTIFRAGILE_STATE_AWS_DYNAMODB_TABLE | The AWS DynamoDB table used for the antifragile state. | false | `undefined`
+ANTIFRAGILE_INFRASTRUCTURE_DOMAIN_NAME | The domain used for the antifragile infrastructure. | true | `undefined`
 
 ### How to contribute
 You can contribute either with code (e.g., new features, bug fixes and documentation) or by [donating 5 EUR](https://paypal.me/hfreire/5). You can read the [contributing guidelines](CONTRIBUTING.md) for instructions on how to contribute with code. 
