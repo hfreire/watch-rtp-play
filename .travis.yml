@@ -38,7 +38,8 @@ after_success:
     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && \
     npm run push
   - |
-    [ -n "$TRAVIS_TAG" ] && \
+    curl -fSL "https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip" -o terraform.zip && \
+    unzip -d /usr/local/bin/ terraform.zip && \
     npm run deploy
 after_script:
   - greenkeeper-lockfile-upload
