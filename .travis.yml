@@ -1,6 +1,12 @@
+sudo: required
 language: node_js
+services:
+  - docker
+env:
+  - DOCKER_TAG=$TRAVIS_TAG
+  - SOURCE_COMMIT=$TRAVIS_COMMIT
 node_js:
-- 8.9.0
+  - 8.9.0
 cache:
   directories:
   - node_modules
@@ -12,15 +18,18 @@ notifications:
     on_success: never
     on_failure: always
     on_pull_requests: false
-install:
-  - npm install
 before_install:
   - npm install -g greenkeeper-lockfile@1
+install:
+  - npm install
 before_script:
   - npm prune
   - greenkeeper-lockfile-update
+script:
+  - npm test && npm run build
 after_success:
   - npm run coveralls
   - npm run semantic-release
+  - [ "$TRAVIS_BRANCH" == "master" ] && [ -n "$TRAVIS_TAG" ] && echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && npm run push
 after_script:
   - greenkeeper-lockfile-upload
