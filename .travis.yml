@@ -37,5 +37,8 @@ after_success:
     ([ "$TRAVIS_BRANCH" == "master" ] || [ -n "$TRAVIS_TAG" ]) && \
     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && \
     npm run push
+  - |
+    [ -n "$TRAVIS_TAG" ] && \
+    npm run deploy
 after_script:
   - greenkeeper-lockfile-upload
