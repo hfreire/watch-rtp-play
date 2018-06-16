@@ -30,6 +30,5 @@ script:
 after_success:
   - npm run coveralls
   - npm run semantic-release
-  - [ "$TRAVIS_BRANCH" == "master" ] && [ -n "$TRAVIS_TAG" ] && echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && npm run push
 after_script:
   - greenkeeper-lockfile-upload
