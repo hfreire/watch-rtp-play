@@ -3,15 +3,19 @@
 [ -z ${DOCKER_REPO-} ] && exit 1
 [ -z ${DOMAIN_NAME-} ] && exit 1
 
+VERSION=$(if [ -z ${VERSION-} ]; then echo $(if [ -z ${DOCKER_TAG-} ]; then echo latest; else echo $DOCKER_TAG; fi); else echo $VERSION; fi)
+
 pushd $(cd -P -- "$(dirname -- "$0")" && pwd -P)/..
 
 $(which terraform) init
 
 $(which terraform) plan \
+-var "version=${VERSION}" \
 -var "docker_repo=${DOCKER_REPO}" \
 -var "domain_name=${DOMAIN_NAME}" || exit 1
 
 $(which terraform) apply -auto-approve \
+-var "version=${VERSION}" \
 -var "docker_repo=${DOCKER_REPO}" \
 -var "domain_name=${DOMAIN_NAME}" || exit 1
 

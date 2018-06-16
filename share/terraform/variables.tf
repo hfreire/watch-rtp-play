@@ -8,9 +8,7 @@ variable "name" {
   default = "watch-rtp-play"
 }
 
-variable "version" {
-  default = "latest"
-}
+variable "version" {}
 
 variable "domain_name" {}
 
