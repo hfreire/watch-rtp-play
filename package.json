@@ -65,9 +65,13 @@
     "coverage": "node_modules/.bin/istanbul cover --include-all-sources --root src --print detail ./node_modules/mocha/bin/_mocha -- --recursive test",
     "test": "npm run lint && npm run coverage",
     "semantic-release": "./node_modules/.bin/semantic-release",
-    "build": "DOCKER_REPO=hfreire NAME=$npm_package_name ./share/docker/hooks/build",
-    "push": "DOCKER_REPO=hfreire NAME=$npm_package_name ./share/docker/hooks/push",
-    "deploy": "DOCKER_REPO=hfreire NAME=$npm_package_name ./share/terraform/scripts/deploy",
+    "docker:build": "DOCKER_REPO=hfreire NAME=$npm_package_name ./share/docker/scripts/build",
+    "docker:push": "DOCKER_REPO=hfreire NAME=$npm_package_name ./share/docker/scripts/push",
+    "docker:test": "./share/docker/scripts/test",
+    "terraform:deploy": "DOCKER_REPO=hfreire NAME=$npm_package_name ./share/terraform/scripts/deploy",
+    "build": "npm run docker:build",
+    "push": "npm run docker:push",
+    "deploy": "npm run terraform:deploy",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "start": "node src/app.js"
   }
