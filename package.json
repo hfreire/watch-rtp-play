@@ -21,7 +21,8 @@
     "lodash": "4.17.9",
     "modern-logger": "1.5.19",
     "request-on-steroids": "1.1.28",
-    "serverful": "1.2.2"
+    "serverful": "1.2.2",
+    "snyk": "^1.83.0"
   },
   "devDependencies": {
     "chai": "4.1.2",
@@ -68,6 +69,9 @@
     "build": "DOCKER_REPO=hfreire NAME=$npm_package_name ./share/docker/hooks/build",
     "push": "DOCKER_REPO=hfreire NAME=$npm_package_name ./share/docker/hooks/push",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
-    "start": "node src/app.js"
-  }
+    "start": "node src/app.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "snyk": true
 }
