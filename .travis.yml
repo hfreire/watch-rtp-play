@@ -24,7 +24,7 @@ before_install:
 install:
   - npm install
   - curl -fSL "https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip" -o terraform.zip && \
-    sudo unzip -d /usr/local/bin/ terraform.zip
+    unzip -d /usr/local/bin/ terraform.zip
 before_script:
   - npm prune
   - greenkeeper-lockfile-update
