@@ -15,6 +15,7 @@
 * 14 radio channels :radio:
 * Uses [Request on Steroids](https://github.com/hfreire/request-on-steroids) to rate limit, retry and circuit break outgoing HTTP requests :white_check_mark:
 * Launch :rocket: inside a Docker container :whale: so you don't need to manage the dependencies :raised_hands: :white_check_mark:
+* Deploy on [AWS](https://aws.amazon.com) using an :hatching_chick: [Antifragile Infrastructure](https://github.com/antifragile-systems/antifragile-infrastructure) :bulb: solution that allows you to easily monitor activity and scale :chart_with_upwards_trend: capacity :white_check_mark:
 
 ### How to use
 
