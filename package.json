@@ -22,7 +22,7 @@
     "modern-logger": "1.5.19",
     "request-on-steroids": "1.1.28",
     "serverful": "1.2.2",
-    "snyk": "^1.83.0"
+    "snyk": "1.83.0"
   },
   "devDependencies": {
     "chai": "4.1.2",
@@ -73,7 +73,7 @@
     "lint": "npm run eslint",
     "test": "npm run lint && npm run coverage",
     "coverage": "node_modules/.bin/istanbul cover --include-all-sources --root src --print detail ./node_modules/mocha/bin/_mocha -- --recursive test",
-    "prepare": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect",
     "commit": "./node_modules/.bin/commit-wizard",
     "build": "npm run docker:build",
     "push": "npm run docker:push",
