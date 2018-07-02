@@ -15,9 +15,11 @@ $(which terraform) init \
 -backend-config="bucket=${ANTIFRAGILE_STATE_AWS_S3_BUCKET}" \
 -backend-config="key=${NAME}.tfstate" \
 -backend-config="encrypt=true" \
--backend-config="dynamodb_table=${ANTIFRAGILE_STATE_AWS_DYNAMODB_TABLE}"
+-backend-config="dynamodb_table=${ANTIFRAGILE_STATE_AWS_DYNAMODB_TABLE}" || exit 1
 
-$(which terraform) get -update=true
+$(which terraform) get -update=true || exit 1
+
+$(which terraform) taint -module=${NAME}.cluster aws_ecs_task_definition.antifragile-service || exit 1
 
 $(which terraform) plan \
 -var "version=${VERSION}" \
