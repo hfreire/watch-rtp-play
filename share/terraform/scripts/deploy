@@ -19,7 +19,7 @@ $(which terraform) init \
 
 $(which terraform) get -update=true || exit 1
 
-$(which terraform) taint -module=${NAME}.cluster aws_ecs_task_definition.antifragile-service || exit 1
+$(which terraform) taint -module=${NAME}.cluster aws_ecs_task_definition.antifragile-service
 
 $(which terraform) plan \
 -var "version=${VERSION}" \
