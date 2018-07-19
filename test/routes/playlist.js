@@ -19,6 +19,7 @@ describe('Playlist', () => {
   before(() => {
     serverful = td.object([])
     serverful.Route = td.constructor([])
+    serverful.Route.BASE_PATH = '/'
 
     Joi = td.object([ 'string', 'number', 'boolean' ])
 

@@ -7,6 +7,8 @@
 
 const { Route } = require('serverful')
 
+const _ = require('lodash')
+
 const Joi = require('joi')
 const Boom = require('boom')
 
@@ -30,10 +32,10 @@ class Playlist extends Route {
       return
     }
 
-    const host = info.host
-    const proto = headers[ 'x-forwarded-proto' ] || connection.info.protocol
+    const host = _.get(headers, 'x-forwarded-host', info.host)
+    const proto = _.get(headers, 'cloudfront-forwarded-proto', _.get(headers, 'x-forwarded-proto', connection.info.protocol))
 
-    const baseUrl = `${proto}://${host}`
+    const baseUrl = `${proto}://${host}${Route.BASE_PATH === '/' ? '' : Route.BASE_PATH}`
     let url
     if (channels[ channel ].is_tv) {
       url = `https://streaming-live.rtp.pt/liverepeater/smil:${channel}.smil/playlist.m3u`
