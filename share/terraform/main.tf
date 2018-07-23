@@ -23,6 +23,7 @@ module "watch-rtp-play" {
   name                  = "${var.name}"
   domain_name           = "${var.domain_name}"
   container_definitions = "${data.template_file.container_definitions.rendered}"
+  api_keys              = "${var.api_keys}"
   api_quota_limit       = 1000
   api_quota_offset      = 0
   api_quota_period      = "DAY"
