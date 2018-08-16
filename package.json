@@ -21,7 +21,8 @@
     "lodash": "4.17.9",
     "modern-logger": "1.5.22",
     "request-on-steroids": "1.1.29",
-    "serverful": "1.3.3"
+    "serverful": "1.3.3",
+    "snyk": "^1.91.0"
   },
   "devDependencies": {
     "chai": "4.1.2",
@@ -74,6 +75,9 @@
     "build": "npm run docker:build",
     "push": "npm run docker:push",
     "deploy": "npm run terraform:deploy",
-    "start": "node src/app.js"
-  }
+    "start": "node src/app.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "snyk": true
 }
