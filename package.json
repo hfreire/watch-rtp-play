@@ -19,7 +19,7 @@
     "bluebird": "3.5.1",
     "health-checkup": "1.0.19",
     "lodash": "4.17.9",
-    "modern-logger": "1.5.22",
+    "modern-logger": "1.5.23",
     "request-on-steroids": "1.1.29",
     "serverful": "1.3.3"
   },
