@@ -16,7 +16,7 @@ describe('Playlist', () => {
   let Request
   let Logger
 
-  before(() => {
+  beforeAll(() => {
     serverful = td.object([])
     serverful.Route = td.constructor([])
     serverful.Route.BASE_PATH = '/'
@@ -39,16 +39,16 @@ describe('Playlist', () => {
     const proxy = false
     const query = { channel, proxy }
     const host = 'my-host'
-    const connection = { info: { protocol: 'http' } }
+    const server = { info: { protocol: 'http' } }
     const info = { host }
-    const request = { query, headers: {}, info, connection }
+    const request = { query, headers: {}, info, server }
     const options = { url, headers, tor: proxy }
     const playlistResponse = { body: readFileSync(join(__dirname, './tv-playlist-response-ok.m3u8')).toString() }
-    let reply
+    let h
     let channels
 
-    before(() => {
-      reply = td.function()
+    beforeAll(() => {
+      h = td.function()
 
       channels = td.object([ channel ])
       channels[ channel ] = { is_tv: true }
@@ -69,63 +69,18 @@ describe('Playlist', () => {
       subject = require('../../src/routes/playlist')
     })
 
-    it('should call request get', () => {
-      subject.handler(request, reply)
+    it('should call request get', async () => {
+      await subject.handler(request, h)
 
       td.verify(Request.get(options), { times: 1 })
     })
 
-    it('should reply with a modified playlist', () => {
-      const replyBody = readFileSync(join(__dirname, './modified-tv-playlist.m3u8')).toString()
+    it('should return a modified playlist', async () => {
+      const body = readFileSync(join(__dirname, './modified-tv-playlist.m3u8')).toString()
 
-      return subject.handler(request, reply)
-        .then(() => {
-          td.verify(reply(null, replyBody), { times: 1 })
-        })
-    })
-  })
+      const result = await subject.handler(request, h)
 
-  describe('when handling a request that fails for a TV playlist', () => {
-    const channel = 'my-channel'
-    const proxy = false
-    const query = { channel, proxy }
-    const host = 'my-host'
-    const connection = { info: { protocol: 'http' } }
-    const info = { host }
-    const request = { query, headers: {}, info, connection }
-    const error = new Error('my-message')
-    let reply
-    let channels
-
-    before(() => {
-      reply = td.function()
-
-      channels = td.object([ channel ])
-      channels[ channel ] = { is_tv: true }
-    })
-
-    beforeEach(() => {
-      td.replace('serverful', serverful)
-
-      td.replace('joi', Joi)
-
-      td.replace('boom', Boom)
-
-      td.replace('../../src/channels.json', channels)
-
-      td.replace('../../src/rtp-play-request', Request)
-      td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenReject(error)
-
-      td.replace('modern-logger', Logger)
-
-      subject = require('../../src/routes/playlist')
-    })
-
-    it('should call boom bad implementation', () => {
-      return subject.handler(request, reply)
-        .then(() => {
-          td.verify(Boom.badImplementation(error), { times: 1 })
-        })
+      expect(result).toEqual(body)
     })
   })
 
@@ -137,15 +92,15 @@ describe('Playlist', () => {
     const proxy = false
     const query = { channel, proxy }
     const host = 'my-host'
-    const connection = { info: { protocol: 'http' } }
+    const server = { info: { protocol: 'http' } }
     const info = { host }
-    const request = { query, headers: {}, info, connection }
+    const request = { query, headers: {}, info, server }
     const options = { url, headers, tor: proxy }
     const playlistResponse = { body: readFileSync(join(__dirname, './radio-playlist-response-ok.m3u8')).toString() }
     let reply
     let channels
 
-    before(() => {
+    beforeAll(() => {
       reply = td.function()
 
       channels = td.object([ channel ])
@@ -167,39 +122,38 @@ describe('Playlist', () => {
       subject = require('../../src/routes/playlist')
     })
 
-    it('should call request get', () => {
-      subject.handler(request, reply)
+    it('should call request get', async () => {
+      await subject.handler(request, reply)
 
       td.verify(Request.get(options), { times: 1 })
     })
 
-    it('should reply with a modified playlist', () => {
-      const replyBody = readFileSync(join(__dirname, './modified-radio-playlist.m3u8')).toString()
+    it('should return a modified playlist', async () => {
+      const body = readFileSync(join(__dirname, './modified-radio-playlist.m3u8')).toString()
 
-      return subject.handler(request, reply)
-        .then(() => {
-          td.verify(reply(null, replyBody), { times: 1 })
-        })
+      const result = await subject.handler(request, reply)
+
+      expect(result).toEqual(body)
     })
   })
 
-  describe('when handling a request that fails for a radio playlist', () => {
+  describe('when handling a request that fails while downloading playlist ', () => {
     const channel = 'my-channel'
     const proxy = false
     const query = { channel, proxy }
     const host = 'my-host'
-    const connection = { info: { protocol: 'http' } }
+    const server = { info: { protocol: 'http' } }
     const info = { host }
-    const request = { query, headers: {}, info, connection }
+    const request = { query, headers: {}, info, server }
     const error = new Error('my-message')
-    let reply
+    let h
     let channels
 
-    before(() => {
-      reply = td.function()
+    beforeAll(() => {
+      h = td.function()
 
       channels = td.object([ channel ])
-      channels[ channel ] = { is_tv: false }
+      channels[ channel ] = { is_tv: true }
     })
 
     beforeEach(() => {
@@ -219,11 +173,12 @@ describe('Playlist', () => {
       subject = require('../../src/routes/playlist')
     })
 
-    it('should call boom bad implementation', () => {
-      return subject.handler(request, reply)
-        .then(() => {
-          td.verify(Boom.badImplementation(error), { times: 1 })
-        })
+    it('should call boom bad request', async () => {
+      try {
+        await subject.handler(request, h)
+      } catch (thrown) {
+        expect(thrown).toEqual(error)
+      }
     })
   })
 
@@ -234,11 +189,11 @@ describe('Playlist', () => {
     const host = 'my-host'
     const info = { host }
     const request = { query, headers: {}, info }
-    let reply
+    let h
     let channels
 
-    before(() => {
-      reply = td.function()
+    beforeAll(() => {
+      h = td.function()
 
       channels = td.object([])
     })
@@ -257,17 +212,19 @@ describe('Playlist', () => {
       subject = require('../../src/routes/playlist')
     })
 
-    it('should call boom bad implementation', () => {
-      subject.handler(request, reply)
+    it('should call boom bad request', async () => {
+      try {
+        await subject.handler(request, h)
+      } catch (ignored) {}
 
-      td.verify(Boom.badRequest(), { times: 1 })
+      td.verify(Boom.badRequest(), { ignoreExtraArgs: true, times: 1 })
     })
   })
 
   describe('when configuring validate', () => {
     let type
 
-    before(() => {
+    beforeAll(() => {
       type = td.object([ 'required', 'optional', 'description' ])
     })
 
@@ -291,8 +248,9 @@ describe('Playlist', () => {
     it('should validate query params', () => {
       const result = subject.validate()
 
-      result.should.have.property('query')
-      result.query.should.have.all.keys([ 'channel', 'proxy' ])
+      expect(result).toHaveProperty('query')
+      expect(result.query).toHaveProperty('channel')
+      expect(result.query).toHaveProperty('proxy')
     })
   })
 
@@ -312,8 +270,8 @@ describe('Playlist', () => {
     it('should allow any origin', () => {
       const result = subject.cors()
 
-      result.should.have.property('origin')
-      result.origin.should.include('*')
+      expect(result).toHaveProperty('origin')
+      expect(result.origin).toContain('*')
     })
   })
 })

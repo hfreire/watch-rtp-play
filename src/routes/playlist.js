@@ -12,8 +12,6 @@ const _ = require('lodash')
 const Joi = require('joi')
 const Boom = require('boom')
 
-const Logger = require('modern-logger')
-
 const Request = require('../rtp-play-request')
 
 const channels = require('../channels.json')
@@ -23,17 +21,15 @@ class Playlist extends Route {
     super('GET', '/playlist.m3u8', 'Playlist', 'Returns a playlist')
   }
 
-  handler ({ query, headers, info, connection }, reply) {
+  async handler ({ query, headers, server, info }, h) {
     const { channel, proxy = false } = query
 
     if (!channels[ channel ]) {
-      reply(Boom.badRequest())
-
-      return
+      throw Boom.badRequest(`Invalid channel ${channel}`)
     }
 
     const host = _.get(headers, 'x-forwarded-host', info.host)
-    const proto = _.get(headers, 'cloudfront-forwarded-proto', _.get(headers, 'x-forwarded-proto', connection.info.protocol))
+    const proto = _.get(headers, 'cloudfront-forwarded-proto', _.get(headers, 'x-forwarded-proto', server.info.protocol))
 
     const baseUrl = `${proto}://${host}${Route.BASE_PATH === '/' ? '' : Route.BASE_PATH}`
     let url
@@ -47,21 +43,15 @@ class Playlist extends Route {
 
     const options = { url, headers: _headers, tor: proxy }
 
-    return Request.get(options)
-      .then(({ body }) => {
-        if (channels[ channel ].is_tv) {
-          body = body.replace(/chunklist_b(\d+)_slpt.m3u8/g, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=$1&proxy=${proxy}`)
-        } else {
-          body = body.replace(/chunklist_DVR.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&proxy=${proxy}`)
-        }
+    let { body } = await Request.get(options)
 
-        reply(null, body)
-      })
-      .catch((error) => {
-        Logger.error(error)
+    if (channels[ channel ].is_tv) {
+      body = body.replace(/chunklist_b(\d+)_slpt.m3u8/g, `${baseUrl}/chunklist.m3u8?channel=${channel}&bandwidth=$1&proxy=${proxy}`)
+    } else {
+      body = body.replace(/chunklist_DVR.m3u8/, `${baseUrl}/chunklist.m3u8?channel=${channel}&proxy=${proxy}`)
+    }
 
-        reply(Boom.badImplementation(error))
-      })
+    return body
   }
 
   validate () {

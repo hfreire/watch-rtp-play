@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Hugo Freire <hugo@exec.sh>.
+ * Copyright (c) 2018, Hugo Freire <hugo@exec.sh>.
  *
  * This source code is licensed under the license found in the
  * LICENSE.md file in the root directory of this source tree.
@@ -10,7 +10,7 @@ describe('RTP Play Request', () => {
   let Request
   let Health
 
-  before(() => {
+  beforeAll(() => {
     Request = td.constructor([])
 
     Health = td.object([ 'addCheck' ])
@@ -26,7 +26,7 @@ describe('RTP Play Request', () => {
     })
 
     it('should be instance of request-on-steroids', () => {
-      subject.should.be.instanceOf(Request)
+      expect(subject).toBeInstanceOf(Request)
     })
   })
 
@@ -37,14 +37,12 @@ describe('RTP Play Request', () => {
       subject = require('../src/rtp-play-request')
     })
 
-    it('should create a request-on-steroids with post function', () => {
-      subject.should.have.property('post')
-      subject.post.should.be.instanceOf(Function)
+    it('should create a request-on-steroids with get function', () => {
+      expect(subject.get).toBeInstanceOf(Function)
     })
 
-    it('should create a request-on-steroids with circuitBreaker function', () => {
-      subject.should.have.property('circuitBreaker')
-      subject.post.should.be.instanceOf(Function)
+    it('should create a request-on-steroids with circuitBreaker', () => {
+      expect(subject.circuitBreaker).toBeDefined()
     })
   })
 
@@ -63,7 +61,7 @@ describe('RTP Play Request', () => {
       td.verify(new Request(captor.capture()), { times: 1 })
 
       const options = captor.value
-      options.should.have.nested.property('perseverance.retry.max_tries', 2)
+      expect(options).toHaveProperty('perseverance.retry.max_tries', 2)
     })
 
     it('should add rtp play health check', () => {

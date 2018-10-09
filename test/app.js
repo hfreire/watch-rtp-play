@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Hugo Freire <hugo@exec.sh>.
+ * Copyright (c) 2018, Hugo Freire <hugo@exec.sh>.
  *
  * This source code is licensed under the license found in the
  * LICENSE.md file in the root directory of this source tree.
@@ -12,7 +12,7 @@ describe('App', () => {
   let Logger
   let Server
 
-  before(() => {
+  beforeAll(() => {
     Logger = td.object([ 'info', 'error' ])
 
     Server = td.object([ 'start', 'stop' ])
@@ -25,7 +25,7 @@ describe('App', () => {
     const VERSION_COMMIT = 'my-version-commint'
     const VERSION_BUILD_DATE = 'my-version-build-date'
 
-    before(() => {
+    beforeAll(() => {
       process.env.VERSION = VERSION
       process.env.VERSION_COMMIT = VERSION_COMMIT
       process.env.VERSION_BUILD_DATE = VERSION_BUILD_DATE
@@ -39,7 +39,7 @@ describe('App', () => {
       subject = require('../src/app')
     })
 
-    after(() => {
+    afterAll(() => {
       delete process.env.VERSION
       delete process.env.VERSION_COMMIT
       delete process.env.VERSION_BUILD_DATE
@@ -59,7 +59,7 @@ describe('App', () => {
     let exit
     let callback
 
-    before(() => {
+    beforeAll(() => {
       on = process.on
       exit = process.exit
 
@@ -79,7 +79,7 @@ describe('App', () => {
       subject = require('../src/app')
     })
 
-    after(() => {
+    afterAll(() => {
       process.on = on
       process.exit = exit
     })
@@ -104,7 +104,7 @@ describe('App', () => {
     let exit
     let callback
 
-    before(() => {
+    beforeAll(() => {
       on = process.on
       exit = process.exit
 
@@ -124,7 +124,7 @@ describe('App', () => {
       subject = require('../src/app')
     })
 
-    after(() => {
+    afterAll(() => {
       process.on = on
       process.exit = exit
     })
@@ -149,7 +149,7 @@ describe('App', () => {
     let exit
     let callback
 
-    before(() => {
+    beforeAll(() => {
       on = process.on
       exit = process.exit
 
@@ -169,7 +169,7 @@ describe('App', () => {
       subject = require('../src/app')
     })
 
-    after(() => {
+    afterAll(() => {
       process.on = on
       process.exit = exit
     })
@@ -193,7 +193,7 @@ describe('App', () => {
     let on
     let exit
 
-    before(() => {
+    beforeAll(() => {
       on = process.on
       exit = process.exit
 
@@ -213,7 +213,7 @@ describe('App', () => {
       subject = require('../src/app')
     })
 
-    after(() => {
+    afterAll(() => {
       process.on = on
       process.exit = exit
     })
@@ -229,7 +229,7 @@ describe('App', () => {
     let exit
     let callback
 
-    before(() => {
+    beforeAll(() => {
       on = process.on
       exit = process.exit
 
@@ -253,7 +253,7 @@ describe('App', () => {
       subject = require('../src/app')
     })
 
-    after(() => {
+    afterAll(() => {
       process.on = on
       process.exit = exit
     })
@@ -286,7 +286,7 @@ describe('App', () => {
     let exit
     let callback
 
-    before(() => {
+    beforeAll(() => {
       on = process.on
       exit = process.exit
 
@@ -310,7 +310,7 @@ describe('App', () => {
       subject = require('../src/app')
     })
 
-    after(() => {
+    afterAll(() => {
       process.on = on
       process.exit = exit
     })

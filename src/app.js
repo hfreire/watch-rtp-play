@@ -1,11 +1,11 @@
-#!/usr/bin/env node
-
 /*
- * Copyright (c) 2017, Hugo Freire <hugo@exec.sh>.
+ * Copyright (c) 2018, Hugo Freire <hugo@exec.sh>.
  *
  * This source code is licensed under the license found in the
  * LICENSE.md file in the root directory of this source tree.
  */
+
+#!/usr/bin/env node
 
 const VERSION = process.env.VERSION
 const VERSION_COMMIT = process.env.VERSION_COMMIT
@@ -22,10 +22,7 @@ const Server = require('./server')
 // shutdown gracefully
 const shutdown = (exitStatus = 0) => {
   return Server.stop()
-    .timeout(1000)
-    .finally(() => {
-      process.exit(exitStatus)
-    })
+    .finally(() => process.exit(exitStatus))
 }
 
 const logErrorAndShutdown = (error) => {

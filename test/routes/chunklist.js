@@ -16,7 +16,7 @@ describe('Chunklist', () => {
   let Request
   let Logger
 
-  before(() => {
+  beforeAll(() => {
     serverful = td.object([])
     serverful.Route = td.constructor([])
 
@@ -43,11 +43,11 @@ describe('Chunklist', () => {
     const request = { query, info }
     const options = { url, headers, tor: proxy }
     const chunklistResponse = { body: readFileSync(join(__dirname, './tv-chunklist-response-ok.m3u8')).toString() }
-    let reply
+    let h
     let channels
 
-    before(() => {
-      reply = td.function()
+    beforeAll(() => {
+      h = td.function()
 
       channels = td.object([ channel ])
       channels[ channel ] = { is_tv: true }
@@ -68,62 +68,18 @@ describe('Chunklist', () => {
       subject = require('../../src/routes/chunklist')
     })
 
-    it('should call request get', () => {
-      subject.handler(request, reply)
+    it('should call request get', async () => {
+      await subject.handler(request, h)
 
       td.verify(Request.get(options), { times: 1 })
     })
 
-    it('should reply with a modified chunklist', () => {
-      const replyBody = readFileSync(join(__dirname, './modified-tv-chunklist.m3u8')).toString()
+    it('should return a modified chunklist', async () => {
+      const body = readFileSync(join(__dirname, './modified-tv-chunklist.m3u8')).toString()
 
-      return subject.handler(request, reply)
-        .then(() => {
-          td.verify(reply(null, replyBody), { times: 1 })
-        })
-    })
-  })
+      const result = await subject.handler(request, h)
 
-  describe('when handling a request that fails for a TV chunklist', () => {
-    const channel = 'my-channel'
-    const proxy = false
-    const query = { channel, proxy }
-    const host = 'my-host'
-    const info = { host }
-    const request = { query, info }
-    const error = new Error('my-message')
-    let reply
-    let channels
-
-    before(() => {
-      reply = td.function()
-
-      channels = td.object([ channel ])
-      channels[ channel ] = { is_tv: true }
-    })
-
-    beforeEach(() => {
-      td.replace('serverful', serverful)
-
-      td.replace('joi', Joi)
-
-      td.replace('boom', Boom)
-
-      td.replace('../../src/channels.json', channels)
-
-      td.replace('../../src/rtp-play-request', Request)
-      td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenReject(error)
-
-      td.replace('modern-logger', Logger)
-
-      subject = require('../../src/routes/chunklist')
-    })
-
-    it('should call boom bad implementation', () => {
-      return subject.handler(request, reply)
-        .then(() => {
-          td.verify(Boom.badImplementation(error), { times: 1 })
-        })
+      expect(result).toEqual(body)
     })
   })
 
@@ -139,11 +95,11 @@ describe('Chunklist', () => {
     const request = { query, info }
     const options = { url, headers, tor: proxy }
     const chunklistResponse = { body: readFileSync(join(__dirname, './radio-chunklist-response-ok.m3u8')).toString() }
-    let reply
+    let h
     let channels
 
-    before(() => {
-      reply = td.function()
+    beforeAll(() => {
+      h = td.function()
 
       channels = td.object([ channel ])
       channels[ channel ] = { is_tv: false, name: channelName }
@@ -164,23 +120,22 @@ describe('Chunklist', () => {
       subject = require('../../src/routes/chunklist')
     })
 
-    it('should call request get', () => {
-      subject.handler(request, reply)
+    it('should call request get', async () => {
+      await subject.handler(request, h)
 
       td.verify(Request.get(options), { times: 1 })
     })
 
-    it('should reply with a modified chunklist', () => {
-      const replyBody = readFileSync(join(__dirname, './modified-radio-chunklist.m3u8')).toString()
+    it('should reply with a modified chunklist', async () => {
+      const body = readFileSync(join(__dirname, './modified-radio-chunklist.m3u8')).toString()
 
-      return subject.handler(request, reply)
-        .then(() => {
-          td.verify(reply(null, replyBody), { times: 1 })
-        })
+      const result = await subject.handler(request, h)
+
+      expect(result).toEqual(body)
     })
   })
 
-  describe('when handling a request that fails for a radio chunklist', () => {
+  describe('when handling a request that fails while downloading chunklist', () => {
     const channel = 'my-channel'
     const proxy = false
     const query = { channel, proxy }
@@ -188,11 +143,11 @@ describe('Chunklist', () => {
     const info = { host }
     const request = { query, info }
     const error = new Error('my-message')
-    let reply
+    let h
     let channels
 
-    before(() => {
-      reply = td.function()
+    beforeAll(() => {
+      h = td.function()
 
       channels = td.object([ channel ])
       channels[ channel ] = { is_tv: false }
@@ -215,11 +170,12 @@ describe('Chunklist', () => {
       subject = require('../../src/routes/chunklist')
     })
 
-    it('should call boom bad implementation', () => {
-      return subject.handler(request, reply)
-        .then(() => {
-          td.verify(Boom.badImplementation(error), { times: 1 })
-        })
+    it('should call boom bad request', async () => {
+      try {
+        await subject.handler(request, h)
+      } catch (thrown) {
+        expect(thrown).toEqual(error)
+      }
     })
   })
 
@@ -230,11 +186,11 @@ describe('Chunklist', () => {
     const host = 'my-host'
     const info = { host }
     const request = { query, info }
-    let reply
+    let h
     let channels
 
-    before(() => {
-      reply = td.function()
+    beforeAll(() => {
+      h = td.function()
 
       channels = td.object([])
     })
@@ -253,17 +209,19 @@ describe('Chunklist', () => {
       subject = require('../../src/routes/chunklist')
     })
 
-    it('should call boom bad implementation', () => {
-      subject.handler(request, reply)
+    it('should call boom bad request', async () => {
+      try {
+        await subject.handler(request, h)
+      } catch (ignored) {}
 
-      td.verify(Boom.badRequest(), { times: 1 })
+      td.verify(Boom.badRequest(), { ignoreExtraArgs: true, times: 1 })
     })
   })
 
   describe('when configuring validate', () => {
     let type
 
-    before(() => {
+    beforeAll(() => {
       type = td.object([ 'required', 'optional', 'description' ])
     })
 
@@ -287,8 +245,10 @@ describe('Chunklist', () => {
     it('should validate query params', () => {
       const result = subject.validate()
 
-      result.should.have.property('query')
-      result.query.should.have.all.keys([ 'channel', 'bandwidth', 'proxy' ])
+      expect(result).toHaveProperty('query')
+      expect(result.query).toHaveProperty('channel')
+      expect(result.query).toHaveProperty('bandwidth')
+      expect(result.query).toHaveProperty('proxy')
     })
   })
 
@@ -308,8 +268,8 @@ describe('Chunklist', () => {
     it('should allow any origin', () => {
       const result = subject.cors()
 
-      result.should.have.property('origin')
-      result.origin.should.include('*')
+      expect(result).toHaveProperty('origin')
+      expect(result.origin).toContain('*')
     })
   })
 })

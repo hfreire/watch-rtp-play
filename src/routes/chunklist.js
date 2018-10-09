@@ -10,8 +10,6 @@ const { Route } = require('serverful')
 const Joi = require('joi')
 const Boom = require('boom')
 
-const Logger = require('modern-logger')
-
 const Request = require('../rtp-play-request')
 const channels = require('../channels.json')
 
@@ -20,13 +18,11 @@ class Chunklist extends Route {
     super('GET', '/chunklist.m3u8', 'Chunklist', 'Returns a chunklist')
   }
 
-  handler ({ query }, reply) {
+  async handler ({ query }, h) {
     const { channel, bandwidth = 640000, proxy = false } = query
 
     if (!channels[ channel ]) {
-      reply(Boom.badRequest())
-
-      return
+      throw Boom.badRequest(`Invalid channel ${channel}`)
     }
 
     const headers = { 'Referer': `http://www.rtp.pt/play/direto/${channel}` }
@@ -43,17 +39,11 @@ class Chunklist extends Route {
 
     const options = { url, headers, tor: proxy }
 
-    return Request.get(options)
-      .then(({ body }) => {
-        body = body.replace(/,\n/g, `,\n${baseUrl}/`)
+    let { body } = await Request.get(options)
 
-        reply(null, body)
-      })
-      .catch((error) => {
-        Logger.error(error)
+    body = body.replace(/,\n/g, `,\n${baseUrl}/`)
 
-        reply(Boom.badImplementation(error))
-      })
+    return body
   }
 
   validate () {
