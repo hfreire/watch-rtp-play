@@ -22,7 +22,7 @@ describe('App', () => {
 
   describe('when running', () => {
     const VERSION = 'my-version'
-    const VERSION_COMMIT = 'my-version-commint'
+    const VERSION_COMMIT = 'my-version-commit'
     const VERSION_BUILD_DATE = 'my-version-build-date'
 
     beforeAll(() => {
