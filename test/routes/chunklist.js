@@ -10,26 +10,16 @@ const { join } = require('path')
 
 describe('Chunklist', () => {
   let subject
-  let serverful
-  let Joi
-  let Boom
   let Request
-  let Logger
 
-  beforeAll(() => {
-    serverful = td.object([])
-    serverful.Route = td.constructor([])
+  beforeEach(() => {
+    jest.mock('serverful')
 
-    Joi = td.object([ 'string', 'number', 'boolean' ])
+    Request = require('../../src/rtp-play-request')
+    jest.mock('../../src/rtp-play-request')
 
-    Boom = td.object([ 'badImplementation', 'badRequest' ])
-
-    Request = td.object([ 'get' ])
-
-    Logger = td.object([ 'error' ])
+    jest.mock('modern-logger')
   })
-
-  afterEach(() => td.reset())
 
   describe('when handling a request for a TV chunklist', () => {
     const channel = 'my-channel'
@@ -44,26 +34,13 @@ describe('Chunklist', () => {
     const options = { url, headers, tor: proxy }
     const chunklistResponse = { body: readFileSync(join(__dirname, './tv-chunklist-response-ok.m3u8')).toString() }
     let h
-    let channels
-
-    beforeAll(() => {
-      h = td.function()
-
-      channels = td.object([ channel ])
-      channels[ channel ] = { is_tv: true }
-    })
 
     beforeEach(() => {
-      td.replace('serverful', serverful)
+      h = jest.fn()
 
-      td.replace('joi', Joi)
+      jest.mock('../../src/channels.json', () => ({ 'my-channel': { is_tv: true } }))
 
-      td.replace('boom', Boom)
-
-      td.replace('../../src/channels.json', channels)
-
-      td.replace('../../src/rtp-play-request', Request)
-      td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenResolve(chunklistResponse)
+      Request.get.mockImplementation(async () => chunklistResponse)
 
       subject = require('../../src/routes/chunklist')
     })
@@ -71,7 +48,8 @@ describe('Chunklist', () => {
     it('should call request get', async () => {
       await subject.handler(request, h)
 
-      td.verify(Request.get(options), { times: 1 })
+      expect(Request.get).toHaveBeenCalledTimes(1)
+      expect(Request.get).toHaveBeenCalledWith(options)
     })
 
     it('should return a modified chunklist', async () => {
@@ -96,26 +74,13 @@ describe('Chunklist', () => {
     const options = { url, headers, tor: proxy }
     const chunklistResponse = { body: readFileSync(join(__dirname, './radio-chunklist-response-ok.m3u8')).toString() }
     let h
-    let channels
-
-    beforeAll(() => {
-      h = td.function()
-
-      channels = td.object([ channel ])
-      channels[ channel ] = { is_tv: false, name: channelName }
-    })
 
     beforeEach(() => {
-      td.replace('serverful', serverful)
+      h = jest.fn()
 
-      td.replace('joi', Joi)
+      jest.mock('../../src/channels.json', () => ({ 'my-channel': { is_tv: false, name: 'my-channel-name' } }))
 
-      td.replace('boom', Boom)
-
-      td.replace('../../src/channels.json', channels)
-
-      td.replace('../../src/rtp-play-request', Request)
-      td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenResolve(chunklistResponse)
+      Request.get.mockImplementation(async () => chunklistResponse)
 
       subject = require('../../src/routes/chunklist')
     })
@@ -123,7 +88,8 @@ describe('Chunklist', () => {
     it('should call request get', async () => {
       await subject.handler(request, h)
 
-      td.verify(Request.get(options), { times: 1 })
+      expect(Request.get).toHaveBeenCalledTimes(1)
+      expect(Request.get).toHaveBeenCalledWith(options)
     })
 
     it('should reply with a modified chunklist', async () => {
@@ -144,33 +110,20 @@ describe('Chunklist', () => {
     const request = { query, info }
     const error = new Error('my-message')
     let h
-    let channels
-
-    beforeAll(() => {
-      h = td.function()
-
-      channels = td.object([ channel ])
-      channels[ channel ] = { is_tv: false }
-    })
 
     beforeEach(() => {
-      td.replace('serverful', serverful)
+      h = jest.fn()
 
-      td.replace('joi', Joi)
+      jest.mock('../../src/channels.json', () => ({ 'my-channel': { is_tv: true } }))
 
-      td.replace('boom', Boom)
-
-      td.replace('../../src/channels.json', channels)
-
-      td.replace('../../src/rtp-play-request', Request)
-      td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenReject(error)
-
-      td.replace('modern-logger', Logger)
+      Request.get.mockImplementation(async () => { throw error })
 
       subject = require('../../src/routes/chunklist')
     })
 
-    it('should call boom bad request', async () => {
+    it('should propagate error', async () => {
+      expect.assertions(1)
+
       try {
         await subject.handler(request, h)
       } catch (thrown) {
@@ -186,59 +139,30 @@ describe('Chunklist', () => {
     const host = 'my-host'
     const info = { host }
     const request = { query, info }
+    const error = new Error(`Invalid channel ${channel}`)
     let h
-    let channels
-
-    beforeAll(() => {
-      h = td.function()
-
-      channels = td.object([])
-    })
 
     beforeEach(() => {
-      td.replace('serverful', serverful)
+      h = jest.fn()
 
-      td.replace('joi', Joi)
-
-      td.replace('boom', Boom)
-
-      td.replace('../../src/channels.json', channels)
-
-      td.replace('../../src/rtp-play-request', Request)
+      jest.mock('../../src/channels.json', () => ({ 'my-channel': undefined }))
 
       subject = require('../../src/routes/chunklist')
     })
 
-    it('should call boom bad request', async () => {
+    it('should propagate error', async () => {
+      expect.assertions(1)
+
       try {
         await subject.handler(request, h)
-      } catch (ignored) {}
-
-      td.verify(Boom.badRequest(), { ignoreExtraArgs: true, times: 1 })
+      } catch (thrown) {
+        expect(thrown).toEqual(error)
+      }
     })
   })
 
   describe('when configuring validate', () => {
-    let type
-
-    beforeAll(() => {
-      type = td.object([ 'required', 'optional', 'description' ])
-    })
-
     beforeEach(() => {
-      td.replace('serverful', serverful)
-
-      td.replace('joi', Joi)
-      td.when(Joi.string()).thenReturn(type)
-      td.when(Joi.number()).thenReturn(type)
-      td.when(Joi.boolean()).thenReturn(type)
-      td.when(type.required()).thenReturn(type)
-      td.when(type.optional()).thenReturn(type)
-
-      td.replace('boom', Boom)
-
-      td.replace('../../src/rtp-play-request', Request)
-
       subject = require('../../src/routes/chunklist')
     })
 
@@ -254,14 +178,6 @@ describe('Chunklist', () => {
 
   describe('when configuring cors', () => {
     beforeEach(() => {
-      td.replace('serverful', serverful)
-
-      td.replace('joi', Joi)
-
-      td.replace('boom', Boom)
-
-      td.replace('../../src/rtp-play-request', Request)
-
       subject = require('../../src/routes/chunklist')
     })
 

@@ -10,27 +10,22 @@ const { join } = require('path')
 
 describe('Playlist', () => {
   let subject
-  let serverful
-  let Joi
-  let Boom
   let Request
-  let Logger
 
   beforeAll(() => {
-    serverful = td.object([])
-    serverful.Route = td.constructor([])
-    serverful.Route.BASE_PATH = '/'
-
-    Joi = td.object([ 'string', 'number', 'boolean' ])
-
-    Boom = td.object([ 'badImplementation', 'badRequest' ])
-
-    Request = td.object([ 'get' ])
-
-    Logger = td.object([ 'error' ])
+    process.env.BASE_PATH = '/'
   })
 
-  afterEach(() => td.reset())
+  beforeEach(() => {
+    const { Route } = require('serverful')
+    jest.mock('serverful')
+    Route.BASE_PATH = '/'
+
+    Request = require('../../src/rtp-play-request')
+    jest.mock('../../src/rtp-play-request')
+
+    jest.mock('modern-logger')
+  })
 
   describe('when handling a request for a TV playlist', () => {
     const channel = 'my-channel'
@@ -45,26 +40,13 @@ describe('Playlist', () => {
     const options = { url, headers, tor: proxy }
     const playlistResponse = { body: readFileSync(join(__dirname, './tv-playlist-response-ok.m3u8')).toString() }
     let h
-    let channels
-
-    beforeAll(() => {
-      h = td.function()
-
-      channels = td.object([ channel ])
-      channels[ channel ] = { is_tv: true }
-    })
 
     beforeEach(() => {
-      td.replace('serverful', serverful)
+      h = jest.fn()
 
-      td.replace('joi', Joi)
+      jest.mock('../../src/channels.json', () => ({ 'my-channel': { is_tv: true } }))
 
-      td.replace('boom', Boom)
-
-      td.replace('../../src/channels.json', channels)
-
-      td.replace('../../src/rtp-play-request', Request)
-      td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenResolve(playlistResponse)
+      Request.get.mockImplementation(async () => playlistResponse)
 
       subject = require('../../src/routes/playlist')
     })
@@ -72,7 +54,8 @@ describe('Playlist', () => {
     it('should call request get', async () => {
       await subject.handler(request, h)
 
-      td.verify(Request.get(options), { times: 1 })
+      expect(Request.get).toHaveBeenCalledTimes(1)
+      expect(Request.get).toHaveBeenCalledWith(options)
     })
 
     it('should return a modified playlist', async () => {
@@ -97,41 +80,29 @@ describe('Playlist', () => {
     const request = { query, headers: {}, info, server }
     const options = { url, headers, tor: proxy }
     const playlistResponse = { body: readFileSync(join(__dirname, './radio-playlist-response-ok.m3u8')).toString() }
-    let reply
-    let channels
-
-    beforeAll(() => {
-      reply = td.function()
-
-      channels = td.object([ channel ])
-      channels[ channel ] = { is_tv: false, name: channelName }
-    })
+    let h
 
     beforeEach(() => {
-      td.replace('serverful', serverful)
+      h = jest.fn()
 
-      td.replace('joi', Joi)
+      jest.mock('../../src/channels.json', () => ({ 'my-channel': { is_tv: false, name: 'my-channel-name' } }))
 
-      td.replace('boom', Boom)
-
-      td.replace('../../src/channels.json', channels)
-
-      td.replace('../../src/rtp-play-request', Request)
-      td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenResolve(playlistResponse)
+      Request.get.mockImplementation(async () => playlistResponse)
 
       subject = require('../../src/routes/playlist')
     })
 
     it('should call request get', async () => {
-      await subject.handler(request, reply)
+      await subject.handler(request, h)
 
-      td.verify(Request.get(options), { times: 1 })
+      expect(Request.get).toHaveBeenCalledTimes(1)
+      expect(Request.get).toHaveBeenCalledWith(options)
     })
 
     it('should return a modified playlist', async () => {
       const body = readFileSync(join(__dirname, './modified-radio-playlist.m3u8')).toString()
 
-      const result = await subject.handler(request, reply)
+      const result = await subject.handler(request, h)
 
       expect(result).toEqual(body)
     })
@@ -147,33 +118,18 @@ describe('Playlist', () => {
     const request = { query, headers: {}, info, server }
     const error = new Error('my-message')
     let h
-    let channels
-
-    beforeAll(() => {
-      h = td.function()
-
-      channels = td.object([ channel ])
-      channels[ channel ] = { is_tv: true }
-    })
 
     beforeEach(() => {
-      td.replace('serverful', serverful)
+      h = jest.fn()
 
-      td.replace('joi', Joi)
+      jest.mock('../../src/channels.json', () => ({ 'my-channel': { is_tv: true } }))
 
-      td.replace('boom', Boom)
-
-      td.replace('../../src/channels.json', channels)
-
-      td.replace('../../src/rtp-play-request', Request)
-      td.when(Request.get(td.matchers.anything()), { ignoreExtraArgs: true }).thenReject(error)
-
-      td.replace('modern-logger', Logger)
+      Request.get.mockImplementation(async () => { throw error })
 
       subject = require('../../src/routes/playlist')
     })
 
-    it('should call boom bad request', async () => {
+    it('should propagate error', async () => {
       try {
         await subject.handler(request, h)
       } catch (thrown) {
@@ -189,59 +145,30 @@ describe('Playlist', () => {
     const host = 'my-host'
     const info = { host }
     const request = { query, headers: {}, info }
+    const error = new Error(`Invalid channel ${channel}`)
     let h
-    let channels
-
-    beforeAll(() => {
-      h = td.function()
-
-      channels = td.object([])
-    })
 
     beforeEach(() => {
-      td.replace('serverful', serverful)
+      h = jest.fn()
 
-      td.replace('joi', Joi)
-
-      td.replace('boom', Boom)
-
-      td.replace('../../src/channels.json', channels)
-
-      td.replace('../../src/rtp-play-request', Request)
+      jest.mock('../../src/channels.json', () => ({ 'my-channel': undefined }))
 
       subject = require('../../src/routes/playlist')
     })
 
-    it('should call boom bad request', async () => {
+    it('should propagate error', async () => {
+      expect.assertions(1)
+
       try {
         await subject.handler(request, h)
-      } catch (ignored) {}
-
-      td.verify(Boom.badRequest(), { ignoreExtraArgs: true, times: 1 })
+      } catch (thrown) {
+        expect(thrown).toEqual(error)
+      }
     })
   })
 
   describe('when configuring validate', () => {
-    let type
-
-    beforeAll(() => {
-      type = td.object([ 'required', 'optional', 'description' ])
-    })
-
     beforeEach(() => {
-      td.replace('serverful', serverful)
-
-      td.replace('joi', Joi)
-      td.when(Joi.string()).thenReturn(type)
-      td.when(Joi.number()).thenReturn(type)
-      td.when(Joi.boolean()).thenReturn(type)
-      td.when(type.required()).thenReturn(type)
-      td.when(type.optional()).thenReturn(type)
-
-      td.replace('boom', Boom)
-
-      td.replace('../../src/rtp-play-request', Request)
-
       subject = require('../../src/routes/playlist')
     })
 
@@ -256,14 +183,6 @@ describe('Playlist', () => {
 
   describe('when configuring cors', () => {
     beforeEach(() => {
-      td.replace('serverful', serverful)
-
-      td.replace('joi', Joi)
-
-      td.replace('boom', Boom)
-
-      td.replace('../../src/rtp-play-request', Request)
-
       subject = require('../../src/routes/playlist')
     })
 
