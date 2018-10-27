@@ -7,7 +7,7 @@
 
 /* eslint-disable no-unused-vars,unicorn/no-process-exit */
 
-describe.skip('App', () => {
+describe('App', () => {
   let subject
   let Logger
   let Server
@@ -48,7 +48,7 @@ describe.skip('App', () => {
     })
   })
 
-  describe('when catching an interrupt signal', () => {
+  describe.skip('when catching an interrupt signal', () => {
     let on
     let exit
     let callback
@@ -95,7 +95,7 @@ describe.skip('App', () => {
     })
   })
 
-  describe('when catching a termination signal', () => {
+  describe.skip('when catching a termination signal', () => {
     let on
     let exit
     let callback
@@ -140,7 +140,7 @@ describe.skip('App', () => {
     })
   })
 
-  describe('when catching a hang up signal', () => {
+  describe.skip('when catching a hang up signal', () => {
     let on
     let exit
     let callback
@@ -185,7 +185,7 @@ describe.skip('App', () => {
     })
   })
 
-  describe('when catching an abort signal', () => {
+  describe.skip('when catching an abort signal', () => {
     let on
     let exit
 
@@ -219,7 +219,7 @@ describe.skip('App', () => {
     })
   })
 
-  describe('when catching an uncaught exception', () => {
+  describe.skip('when catching an uncaught exception', () => {
     const error = new Error('my-error-message')
     let on
     let exit
@@ -276,7 +276,7 @@ describe.skip('App', () => {
     })
   })
 
-  describe('when catching an unhandled rejection', () => {
+  describe.skip('when catching an unhandled rejection', () => {
     const error = new Error('my-error-message')
     let on
     let exit
