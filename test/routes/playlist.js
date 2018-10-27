@@ -12,10 +12,6 @@ describe('Playlist', () => {
   let subject
   let Request
 
-  beforeAll(() => {
-    process.env.BASE_PATH = '/'
-  })
-
   beforeEach(() => {
     const { Route } = require('serverful')
     jest.mock('serverful')
@@ -124,7 +120,7 @@ describe('Playlist', () => {
 
       jest.mock('../../src/channels.json', () => ({ 'my-channel': { is_tv: true } }))
 
-      Request.get.mockImplementation(async () => { throw error })
+      Request.get.mockRejectedValue(error)
 
       subject = require('../../src/routes/playlist')
     })

@@ -7,19 +7,23 @@
 
 /* eslint-disable no-unused-vars,unicorn/no-process-exit */
 
-describe('App', () => {
+describe.skip('App', () => {
   let subject
   let Logger
   let Server
 
-  beforeEach(() => {
+  beforeAll(() => {
     Logger = require('modern-logger')
     jest.mock('modern-logger')
 
     Server = require('../src/server')
     jest.mock('../src/server')
+  })
 
-    subject = require('../src/app')
+  afterAll(() => {
+    jest.unmock('modern-logger')
+
+    jest.unmock('../src/server')
   })
 
   describe('when running', () => {
@@ -31,6 +35,10 @@ describe('App', () => {
       process.env.VERSION = VERSION
       process.env.VERSION_COMMIT = VERSION_COMMIT
       process.env.VERSION_BUILD_DATE = VERSION_BUILD_DATE
+    })
+
+    beforeEach(() => {
+      subject = require('../src/app')
     })
 
     afterAll(() => {
@@ -48,36 +56,22 @@ describe('App', () => {
     })
   })
 
-  describe.skip('when catching an interrupt signal', () => {
-    let on
+  describe('when catching an interrupt signal', () => {
     let exit
-    let callback
 
     beforeAll(() => {
-      on = process.on
       exit = process.exit
     })
 
     beforeEach(() => {
-      process.on = jest.fn((e, cb) => {
-        if (e === 'SIGINT') {
-          callback = cb
-        }
-      })
-
       process.exit = jest.fn()
 
-      jest.mock('modern-logger')
+      Server.stop.mockResolvedValue()
 
-      Server = require('../src/server')
-      jest.mock('../src/server')
-      Server.stop.mockImplementation(async () => {})
-
-      subject = require('../src/app')
+      require('../src/app')
     })
 
     afterAll(() => {
-      process.on = on
       process.exit = exit
     })
 
@@ -87,249 +81,154 @@ describe('App', () => {
       expect(Server.stop).toHaveBeenCalled()
     })
 
-    it('should exit process with return value 0', () => {
-      return callback()
-        .then(() => {
-          td.verify(process.exit(0), { times: 1 })
-        })
+    it('should exit process with return value 0', async () => {
+      await process.emit('SIGINT')
+
+      expect(process.exit).toHaveBeenCalledWith(0)
     })
   })
 
-  describe.skip('when catching a termination signal', () => {
-    let on
-    let exit
-    let callback
-
-    beforeAll(() => {
-      on = process.on
-      exit = process.exit
-
-      process.on = td.function()
-
-      process.exit = td.function()
-    })
-
-    beforeEach(() => {
-      td.when(process.on('SIGTERM'), { ignoreExtraArgs: true }).thenDo((event, _callback) => { callback = _callback })
-
-      td.replace('modern-logger', Logger)
-
-      td.when(Server.stop()).thenResolve()
-      td.replace('../src/server', Server)
-
-      subject = require('../src/app')
-    })
-
-    afterAll(() => {
-      process.on = on
-      process.exit = exit
-    })
-
-    it('should stop the server', () => {
-      return callback()
-        .then(() => {
-          td.verify(process.exit(0), { times: 1 })
-        })
-    })
-
-    it('should exit process with return value 0', () => {
-      return callback()
-        .then(() => {
-          td.verify(process.exit(0), { times: 1 })
-        })
-    })
-  })
-
-  describe.skip('when catching a hang up signal', () => {
-    let on
-    let exit
-    let callback
-
-    beforeAll(() => {
-      on = process.on
-      exit = process.exit
-
-      process.on = td.function()
-
-      process.exit = td.function()
-    })
-
-    beforeEach(() => {
-      td.when(process.on('SIGHUP'), { ignoreExtraArgs: true }).thenDo((event, _callback) => { callback = _callback })
-
-      td.replace('modern-logger', Logger)
-
-      td.when(Server.stop()).thenResolve()
-      td.replace('../src/server', Server)
-
-      subject = require('../src/app')
-    })
-
-    afterAll(() => {
-      process.on = on
-      process.exit = exit
-    })
-
-    it('should stop the server', () => {
-      return callback()
-        .then(() => {
-          td.verify(process.exit(0), { times: 1 })
-        })
-    })
-
-    it('should exit process with return value 0', () => {
-      return callback()
-        .then(() => {
-          td.verify(process.exit(0), { times: 1 })
-        })
-    })
-  })
-
-  describe.skip('when catching an abort signal', () => {
-    let on
+  describe('when catching a termination signal', () => {
     let exit
 
     beforeAll(() => {
-      on = process.on
       exit = process.exit
-
-      process.on = td.function()
-
-      process.exit = td.function()
     })
 
     beforeEach(() => {
-      td.when(process.on('SIGABRT'), { ignoreExtraArgs: true }).thenCallback()
+      process.exit = jest.fn()
 
-      td.replace('modern-logger', Logger)
+      Server.stop.mockResolvedValue()
 
-      td.when(Server.stop()).thenResolve()
-      td.replace('../src/server', Server)
-
-      subject = require('../src/app')
+      require('../src/app')
     })
 
     afterAll(() => {
-      process.on = on
       process.exit = exit
     })
 
-    it('should exit process with return value 1', () => {
-      td.verify(process.exit(1), { times: 1 })
+    it('should exit process with return value 0', async () => {
+      await process.emit('SIGTERM')
+
+      expect(process.exit).toHaveBeenCalledWith(0)
     })
   })
 
-  describe.skip('when catching an uncaught exception', () => {
+  describe('when catching a hang up signal', () => {
+    let exit
+
+    beforeAll(() => {
+      exit = process.exit
+    })
+
+    beforeEach(() => {
+      process.exit = jest.fn()
+
+      Server.stop.mockResolvedValue()
+
+      require('../src/app')
+    })
+
+    afterAll(() => {
+      process.exit = exit
+    })
+
+    it('should exit process with return value 0', async () => {
+      await process.emit('SIGHUP')
+
+      expect(process.exit).toHaveBeenCalledWith(0)
+    })
+  })
+
+  describe('when catching an abort signal', () => {
+    let exit
+
+    beforeAll(() => {
+      exit = process.exit
+    })
+
+    beforeEach(() => {
+      process.exit = jest.fn()
+
+      Server.stop.mockResolvedValue()
+
+      require('../src/app')
+    })
+
+    afterAll(() => {
+      process.exit = exit
+    })
+
+    it('should exit process with return value 1', async () => {
+      await process.emit('SIGABRT')
+
+      expect(process.exit).toHaveBeenCalledWith(1)
+    })
+  })
+
+  describe('when catching an uncaught exception', () => {
     const error = new Error('my-error-message')
-    let on
     let exit
-    let callback
 
     beforeAll(() => {
-      on = process.on
       exit = process.exit
-
-      process.on = td.function()
-
-      process.exit = td.function()
     })
 
-    beforeEach(() => {
-      process.on = td.function()
-      process.exit = td.function()
+    beforeEach(async () => {
+      process.exit = jest.fn()
 
-      td.when(process.on('uncaughtException'), { ignoreExtraArgs: true }).thenDo((event, _callback) => { callback = _callback })
+      Logger.error.mockImplementation(() => {})
 
-      td.when(Logger.error(), { ignoreExtraArgs: true }).thenResolve()
-      td.replace('modern-logger', Logger)
-
-      td.when(Server.stop()).thenResolve()
-      td.replace('../src/server', Server)
-
-      subject = require('../src/app')
+      require('../src/app')
     })
 
     afterAll(() => {
-      process.on = on
       process.exit = exit
     })
 
-    it('should log error', () => {
-      return callback(error)
-        .then(() => {
-          td.verify(Logger.error(error), { times: 1 })
-        })
+    it('should log error', async () => {
+      await process.emit('uncaughtException', error)
+
+      expect(Logger.error).toHaveBeenCalledWith(error)
     })
 
-    it('should stop the server', () => {
-      return callback(error)
-        .then(() => {
-          td.verify(Server.stop(), { times: 1 })
-        })
-    })
+    it('should exit process with return value 1', async () => {
+      await process.emit('uncaughtException')
 
-    it('should exit process with return value 1', () => {
-      return callback()
-        .then(() => {
-          td.verify(process.exit(1), { times: 1 })
-        })
+      expect(process.exit).toHaveBeenCalledWith(1)
     })
   })
 
-  describe.skip('when catching an unhandled rejection', () => {
+  describe('when catching an unhandled rejection', () => {
     const error = new Error('my-error-message')
-    let on
     let exit
-    let callback
 
     beforeAll(() => {
-      on = process.on
       exit = process.exit
-
-      process.on = td.function()
-
-      process.exit = td.function()
     })
 
     beforeEach(() => {
-      process.on = td.function()
-      process.exit = td.function()
+      process.exit = jest.fn()
 
-      td.when(process.on('unhandledRejection'), { ignoreExtraArgs: true }).thenDo((event, _callback) => { callback = _callback })
+      Logger.error.mockResolvedValue()
 
-      td.when(Logger.error(), { ignoreExtraArgs: true }).thenResolve()
-      td.replace('modern-logger', Logger)
-
-      td.when(Server.stop()).thenResolve()
-      td.replace('../src/server', Server)
-
-      subject = require('../src/app')
+      require('../src/app')
     })
 
     afterAll(() => {
-      process.on = on
       process.exit = exit
     })
 
-    it('should log error', () => {
-      return callback(error)
-        .then(() => {
-          td.verify(Logger.error(error), { times: 1 })
-        })
+    it('should log error', async () => {
+      await process.emit('unhandledRejection', error)
+
+      expect(Logger.error).toHaveBeenCalledWith(error)
     })
 
-    it('should stop the server', () => {
-      return callback(error)
-        .then(() => {
-          td.verify(Server.stop(), { times: 1 })
-        })
-    })
+    it('should exit process with return value 1', async () => {
+      await process.emit('uncaughtException')
 
-    it('should exit process with return value 1', () => {
-      return callback()
-        .then(() => {
-          td.verify(process.exit(1), { times: 1 })
-        })
+      expect(process.exit).toHaveBeenCalledWith(1)
     })
   })
 })

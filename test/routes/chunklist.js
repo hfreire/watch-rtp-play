@@ -116,7 +116,7 @@ describe('Chunklist', () => {
 
       jest.mock('../../src/channels.json', () => ({ 'my-channel': { is_tv: true } }))
 
-      Request.get.mockImplementation(async () => { throw error })
+      Request.get.mockRejectedValue(error)
 
       subject = require('../../src/routes/chunklist')
     })
