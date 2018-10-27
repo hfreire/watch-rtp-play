@@ -54,11 +54,11 @@ npm run lint
 ```
 
 ### How to test the code locally
-You are encouraged to write automated test cases of your changes. This repo uses [Mocha](https://mochajs.org/) test framework with [testdouble.js](https://github.com/testdouble/testdouble.js) for faking, mocking and stubbing and [Chai](http://chaijs.com) for assertion.
+You are encouraged to write automated test cases of your changes. This repo uses [Jest](https://jestjs.io/) test framework.
 
-Run the NPM script that will verify failing test cases and report automated test coverage
+Run the NPM script that will verify failing test cases and report code test coverage
 ```
-npm run coverage
+npm run jest
 ```
 
 ### How to commit changes
@@ -79,7 +79,7 @@ Once you generate a pull request, GitHub and third-party apps will verify if the
 
 You are encouraged to verify your changes by testing the code locally.
 
-Run the NPM script that will verify the code for style guide violations, failing test cases and report automated test coverage
+Run the NPM script that will verify the code for style guide violations, failing test cases and report code test coverage
 ```
 npm test
 ```

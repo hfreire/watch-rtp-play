@@ -10,62 +10,36 @@ describe('RTP Play Request', () => {
   let Request
   let Health
 
-  beforeAll(() => {
-    Request = td.constructor([])
+  beforeEach(() => {
+    Request = require('request-on-steroids')
+    jest.mock('request-on-steroids')
 
-    Health = td.object([ 'addCheck' ])
+    Health = require('health-checkup')
+    jest.mock('health-checkup')
+
+    subject = require('../src/rtp-play-request')
   })
 
-  afterEach(() => td.reset())
-
   describe('when exporting', () => {
-    beforeEach(() => {
-      td.replace('request-on-steroids', Request)
-
-      subject = require('../src/rtp-play-request')
-    })
-
     it('should be instance of request-on-steroids', () => {
       expect(subject).toBeInstanceOf(Request)
     })
   })
 
   describe('when exporting and loading request-on-steroids', () => {
-    beforeEach(() => {
-      td.replace('health-checkup', Health)
-
-      subject = require('../src/rtp-play-request')
-    })
-
     it('should create a request-on-steroids with get function', () => {
       expect(subject.get).toBeInstanceOf(Function)
-    })
-
-    it('should create a request-on-steroids with circuitBreaker', () => {
-      expect(subject.circuitBreaker).toBeDefined()
     })
   })
 
   describe('when constructing', () => {
-    beforeEach(() => {
-      td.replace('request-on-steroids', Request)
-
-      td.replace('health-checkup', Health)
-
-      subject = require('../src/rtp-play-request')
-    })
-
     it('should construct request instance with default options', () => {
-      const captor = td.matchers.captor()
-
-      td.verify(new Request(captor.capture()), { times: 1 })
-
-      const options = captor.value
-      expect(options).toHaveProperty('perseverance.retry.max_tries', 2)
+      expect(Request).toHaveBeenCalledWith({ perseverance: { retry: { max_tries: 2 } } })
     })
 
     it('should add rtp play health check', () => {
-      td.verify(Health.addCheck('rtp-play', td.matchers.isA(Function)), { times: 1 })
+      expect(Health.addCheck).toHaveBeenCalledTimes(1)
+      expect(Health.addCheck).toHaveBeenCalledWith('rtp-play', expect.any(Function))
     })
   })
 })

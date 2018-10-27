@@ -5,13 +5,8 @@
  * LICENSE.md file in the root directory of this source tree.
  */
 
-const _ = require('lodash')
+afterEach(() => {
+  jest.resetAllMocks()
 
-const td = require('testdouble')
-td.config({ ignoreWarnings: true })
-require('testdouble-jest')(td, jest)
-
-afterEach(() => td.reset())
-
-global._ = _
-global.td = td
+  jest.resetModules()
+})

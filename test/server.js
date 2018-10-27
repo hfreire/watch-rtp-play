@@ -7,24 +7,18 @@
 
 describe('Server', () => {
   let subject
-  let serverful
+  let Serverful
 
-  beforeAll(() => {
-    serverful = td.object([])
-    serverful.Serverful = td.constructor([])
+  beforeEach(() => {
+    ({ Serverful } = require('serverful'))
+    jest.mock('serverful')
+
+    subject = require('../src/server')
   })
 
-  afterAll(() => td.reset())
-
   describe('when exporting', () => {
-    beforeEach(() => {
-      td.replace('serverful', serverful)
-
-      subject = require('../src/server')
-    })
-
     it('should be instance of serverful', () => {
-      expect(subject).toBeInstanceOf(serverful.Serverful)
+      expect(subject).toBeInstanceOf(Serverful)
     })
   })
 })
