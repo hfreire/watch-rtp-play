@@ -7,23 +7,19 @@
 
 /* eslint-disable no-unused-vars,unicorn/no-process-exit */
 
-describe.skip('App', () => {
+describe('App', () => {
   let subject
   let Logger
   let Server
 
-  beforeAll(() => {
+  beforeEach(() => {
     Logger = require('modern-logger')
     jest.mock('modern-logger')
 
     Server = require('../src/server')
     jest.mock('../src/server')
-  })
 
-  afterAll(() => {
-    jest.unmock('modern-logger')
-
-    jest.unmock('../src/server')
+    subject = require('../src/app')
   })
 
   describe('when running', () => {
@@ -35,10 +31,6 @@ describe.skip('App', () => {
       process.env.VERSION = VERSION
       process.env.VERSION_COMMIT = VERSION_COMMIT
       process.env.VERSION_BUILD_DATE = VERSION_BUILD_DATE
-    })
-
-    beforeEach(() => {
-      subject = require('../src/app')
     })
 
     afterAll(() => {
@@ -56,29 +48,21 @@ describe.skip('App', () => {
     })
   })
 
-  describe('when catching an interrupt signal', () => {
+  describe.skip('when catching an interrupt signal', () => {
     let exit
 
     beforeAll(() => {
       exit = process.exit
+
+      process.exit = jest.fn()
     })
 
     beforeEach(() => {
-      process.exit = jest.fn()
-
       Server.stop.mockResolvedValue()
-
-      require('../src/app')
     })
 
     afterAll(() => {
       process.exit = exit
-    })
-
-    it('should stop the server', async () => {
-      await process.emit('SIGINT')
-
-      expect(Server.stop).toHaveBeenCalled()
     })
 
     it('should exit process with return value 0', async () => {
@@ -88,7 +72,7 @@ describe.skip('App', () => {
     })
   })
 
-  describe('when catching a termination signal', () => {
+  describe.skip('when catching a termination signal', () => {
     let exit
 
     beforeAll(() => {
@@ -100,7 +84,7 @@ describe.skip('App', () => {
 
       Server.stop.mockResolvedValue()
 
-      require('../src/app')
+      subject = require('../src/app')
     })
 
     afterAll(() => {
@@ -114,7 +98,7 @@ describe.skip('App', () => {
     })
   })
 
-  describe('when catching a hang up signal', () => {
+  describe.skip('when catching a hang up signal', () => {
     let exit
 
     beforeAll(() => {
@@ -126,7 +110,7 @@ describe.skip('App', () => {
 
       Server.stop.mockResolvedValue()
 
-      require('../src/app')
+      subject = require('../src/app')
     })
 
     afterAll(() => {
@@ -152,7 +136,7 @@ describe.skip('App', () => {
 
       Server.stop.mockResolvedValue()
 
-      require('../src/app')
+      subject = require('../src/app')
     })
 
     afterAll(() => {
@@ -166,7 +150,7 @@ describe.skip('App', () => {
     })
   })
 
-  describe('when catching an uncaught exception', () => {
+  describe.skip('when catching an uncaught exception', () => {
     const error = new Error('my-error-message')
     let exit
 
@@ -179,7 +163,7 @@ describe.skip('App', () => {
 
       Logger.error.mockImplementation(() => {})
 
-      require('../src/app')
+      subject = require('../src/app')
     })
 
     afterAll(() => {
@@ -199,7 +183,7 @@ describe.skip('App', () => {
     })
   })
 
-  describe('when catching an unhandled rejection', () => {
+  describe.skip('when catching an unhandled rejection', () => {
     const error = new Error('my-error-message')
     let exit
 
@@ -212,7 +196,7 @@ describe.skip('App', () => {
 
       Logger.error.mockResolvedValue()
 
-      require('../src/app')
+      subject = require('../src/app')
     })
 
     afterAll(() => {

@@ -47,7 +47,8 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "setupTestFrameworkScriptFile": "./test/helper.js",
+    "resetMocks": true,
+    "resetModules": true,
     "testMatch": [
       "<rootDir>/test/**.js"
     ],

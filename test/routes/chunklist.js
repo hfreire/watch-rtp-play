@@ -15,8 +15,8 @@ describe('Chunklist', () => {
   beforeEach(() => {
     jest.mock('serverful')
 
-    Request = require('../../src/rtp-play-request')
     jest.mock('../../src/rtp-play-request')
+    Request = require('../../src/rtp-play-request')
 
     jest.mock('modern-logger')
   })
