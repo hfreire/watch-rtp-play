@@ -53,8 +53,7 @@
       "<rootDir>/test/**.js"
     ],
     "testPathIgnorePatterns": [
-      "/node_modules/",
-      "./test/helper.js"
+      "/node_modules/"
     ],
     "collectCoverage": true,
     "collectCoverageFrom": [
