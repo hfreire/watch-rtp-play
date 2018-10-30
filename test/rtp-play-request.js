@@ -10,29 +10,39 @@ describe('RTP Play Request', () => {
   let Request
   let Health
 
-  beforeEach(() => {
+  beforeAll(() => {
     Request = require('request-on-steroids')
     jest.mock('request-on-steroids')
 
     Health = require('health-checkup')
     jest.mock('health-checkup')
-
-    subject = require('../src/rtp-play-request')
   })
 
   describe('when exporting', () => {
+    beforeEach(() => {
+      subject = require('../src/rtp-play-request')
+    })
+
     it('should be instance of request-on-steroids', () => {
       expect(subject).toBeInstanceOf(Request)
     })
   })
 
   describe('when exporting and loading request-on-steroids', () => {
+    beforeEach(() => {
+      subject = require('../src/rtp-play-request')
+    })
+
     it('should create a request-on-steroids with get function', () => {
       expect(subject.get).toBeInstanceOf(Function)
     })
   })
 
   describe('when constructing', () => {
+    beforeEach(() => {
+      subject = require('../src/rtp-play-request')
+    })
+
     it('should construct request instance with default options', () => {
       expect(Request).toHaveBeenCalledWith({ perseverance: { retry: { max_tries: 2 } } })
     })

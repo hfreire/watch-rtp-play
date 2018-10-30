@@ -47,13 +47,13 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "resetMocks": true,
-    "resetModules": true,
+    "setupTestFrameworkScriptFile": "./test/helper.js",
     "testMatch": [
       "<rootDir>/test/**.js"
     ],
     "testPathIgnorePatterns": [
-      "/node_modules/"
+      "/node_modules/",
+      "./test/helper.js"
     ],
     "collectCoverage": true,
     "collectCoverageFrom": [
