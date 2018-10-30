@@ -9,14 +9,16 @@ describe('Server', () => {
   let subject
   let Serverful
 
-  beforeEach(() => {
+  beforeAll(() => {
     ({ Serverful } = require('serverful'))
     jest.mock('serverful')
-
-    subject = require('../src/server')
   })
 
   describe('when exporting', () => {
+    beforeEach(() => {
+      subject = require('../src/server')
+    })
+
     it('should be instance of serverful', () => {
       expect(subject).toBeInstanceOf(Serverful)
     })
