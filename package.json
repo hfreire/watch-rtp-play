@@ -47,8 +47,7 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "resetMocks": true,
-    "resetModules": true,
+    "setupTestFrameworkScriptFile": "./test/helper.js",
     "testMatch": [
       "<rootDir>/test/**.js"
     ],
@@ -72,7 +71,7 @@
     "analyzeCommits": "simple-commit-message"
   },
   "scripts": {
-    "eslint": "node_modules/.bin/eslint --ext .json --ext .js .",
+    "eslint": "./node_modules/.bin/eslint --ext .json --ext .js .",
     "jest": "./node_modules/.bin/jest",
     "docker:build": "DOCKER_REPO=hfreire NAME=$npm_package_name ./share/docker/scripts/build",
     "docker:push": "DOCKER_REPO=hfreire NAME=$npm_package_name ./share/docker/scripts/push",

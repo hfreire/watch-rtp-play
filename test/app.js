@@ -12,14 +12,12 @@ describe('App', () => {
   let Logger
   let Server
 
-  beforeEach(() => {
+  beforeAll(() => {
     Logger = require('modern-logger')
     jest.mock('modern-logger')
 
     Server = require('../src/server')
     jest.mock('../src/server')
-
-    subject = require('../src/app')
   })
 
   describe('when running', () => {
@@ -31,6 +29,10 @@ describe('App', () => {
       process.env.VERSION = VERSION
       process.env.VERSION_COMMIT = VERSION_COMMIT
       process.env.VERSION_BUILD_DATE = VERSION_BUILD_DATE
+    })
+
+    beforeEach(() => {
+      subject = require('../src/app')
     })
 
     afterAll(() => {
