@@ -20,14 +20,14 @@
     "lodash": "4.17.11",
     "modern-logger": "1.5.29",
     "request-on-steroids": "1.1.36",
-    "serverful": "1.4.17"
+    "serverful": "1.4.18"
   },
   "devDependencies": {
     "coveralls": "2.13.3",
     "eslint": "5.0.1",
     "eslint-config-hfreire": "1.1.3",
     "eslint-plugin-import": "2.13.0",
-    "eslint-plugin-jest": "21.27.1",
+    "eslint-plugin-jest": "22.0.0",
     "eslint-plugin-json": "1.2.1",
     "eslint-plugin-mocha": "5.2.0",
     "eslint-plugin-node": "8.0.0",
