@@ -126,6 +126,8 @@ describe('Playlist', () => {
     })
 
     it('should propagate error', async () => {
+      expect.assertions(1)
+
       try {
         await subject.handler(request, h)
       } catch (thrown) {
