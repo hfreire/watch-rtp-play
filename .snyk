@@ -1,3 +1,37 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.12.0
+version: v1.13.1
 ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:lodash:20180130':
+    - npm > npm-audit-report > cli-table2 > lodash:
+        patched: '2018-11-14T09:35:27.696Z'
+    - pre-git > simple-commit-message > inquirer-confirm > inquirer > lodash:
+        patched: '2018-11-14T09:35:27.696Z'
+    - request-on-steroids > socks5-http-client > npm > cli-table2 > lodash:
+        patched: '2018-11-14T09:35:27.696Z'
+    - request-on-steroids > socks5-http-client > npm > npm-audit-report > cli-table2 > lodash:
+        patched: '2018-11-14T09:35:27.696Z'
+    - npm > cli-table2 > lodash:
+        patched: '2018-11-14T09:35:27.696Z'
+  'npm:stringstream:20180511':
+    - npm > node-gyp > request > stringstream:
+        patched: '2018-11-14T09:35:27.696Z'
+    - npm > npm-registry-client > request > stringstream:
+        patched: '2018-11-14T09:35:27.696Z'
+    - npm > npm-lifecycle > node-gyp > request > stringstream:
+        patched: '2018-11-14T09:35:27.696Z'
+    - request-on-steroids > socks5-http-client > npm > request > stringstream:
+        patched: '2018-11-14T09:35:27.696Z'
+    - npm > libcipm > npm-lifecycle > node-gyp > request > stringstream:
+        patched: '2018-11-14T09:35:27.696Z'
+    - request-on-steroids > socks5-http-client > npm > node-gyp > request > stringstream:
+        patched: '2018-11-14T09:35:27.696Z'
+    - request-on-steroids > socks5-http-client > npm > npm-registry-client > request > stringstream:
+        patched: '2018-11-14T09:35:27.696Z'
+    - request-on-steroids > socks5-http-client > npm > npm-lifecycle > node-gyp > request > stringstream:
+        patched: '2018-11-14T09:35:27.696Z'
+    - npm > request > stringstream:
+        patched: '2018-11-14T09:35:27.696Z'
+    - request-on-steroids > socks5-http-client > npm > libcipm > npm-lifecycle > node-gyp > request > stringstream:
+        patched: '2018-11-14T09:35:27.696Z'
