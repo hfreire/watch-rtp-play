@@ -14,24 +14,3 @@ patch:
         patched: '2018-11-14T09:35:27.696Z'
     - npm > cli-table2 > lodash:
         patched: '2018-11-14T09:35:27.696Z'
-  'npm:stringstream:20180511':
-    - npm > node-gyp > request > stringstream:
-        patched: '2018-11-14T09:35:27.696Z'
-    - npm > npm-registry-client > request > stringstream:
-        patched: '2018-11-14T09:35:27.696Z'
-    - npm > npm-lifecycle > node-gyp > request > stringstream:
-        patched: '2018-11-14T09:35:27.696Z'
-    - request-on-steroids > socks5-http-client > npm > request > stringstream:
-        patched: '2018-11-14T09:35:27.696Z'
-    - npm > libcipm > npm-lifecycle > node-gyp > request > stringstream:
-        patched: '2018-11-14T09:35:27.696Z'
-    - request-on-steroids > socks5-http-client > npm > node-gyp > request > stringstream:
-        patched: '2018-11-14T09:35:27.696Z'
-    - request-on-steroids > socks5-http-client > npm > npm-registry-client > request > stringstream:
-        patched: '2018-11-14T09:35:27.696Z'
-    - request-on-steroids > socks5-http-client > npm > npm-lifecycle > node-gyp > request > stringstream:
-        patched: '2018-11-14T09:35:27.696Z'
-    - npm > request > stringstream:
-        patched: '2018-11-14T09:35:27.696Z'
-    - request-on-steroids > socks5-http-client > npm > libcipm > npm-lifecycle > node-gyp > request > stringstream:
-        patched: '2018-11-14T09:35:27.696Z'
