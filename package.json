@@ -23,7 +23,7 @@
     "serverful": "1.4.20"
   },
   "devDependencies": {
-    "coveralls": "2.13.3",
+    "coveralls": "3.0.2",
     "eslint": "5.0.1",
     "eslint-config-hfreire": "1.1.3",
     "eslint-plugin-import": "2.13.0",
@@ -37,7 +37,8 @@
     "jest": "22.4.2",
     "npm-merge-driver": "2.3.5",
     "pre-git": "3.17.1",
-    "semantic-release": "15.11.0"
+    "semantic-release": "15.11.0",
+    "snyk": "^1.108.2"
   },
   "config": {
     "pre-git": {
