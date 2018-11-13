@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/hfreire/watch-rtp-play.svg?branch=master)](https://travis-ci.org/hfreire/watch-rtp-play)
 [![Coverage Status](https://coveralls.io/repos/github/hfreire/watch-rtp-play/badge.svg?branch=master)](https://coveralls.io/github/hfreire/watch-rtp-play?branch=master)
+[![Known Vulnerabilities](https://snyk.io/test/github/hfreire/watch-rtp-play/badge.svg)](https://snyk.io/test/github/hfreire/watch-rtp-play)
 [![](https://img.shields.io/github/release/hfreire/watch-rtp-play.svg)](https://github.com/hfreire/watch-rtp-play/releases)
 [![Docker Stars](https://img.shields.io/docker/stars/hfreire/watch-rtp-play.svg)](https://hub.docker.com/r/hfreire/watch-rtp-play/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/hfreire/watch-rtp-play.svg)](https://hub.docker.com/r/hfreire/watch-rtp-play/)
