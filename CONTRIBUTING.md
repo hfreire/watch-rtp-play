@@ -11,7 +11,7 @@ git clone https://github.com/my-github-username/watch-rtp-play
 
 Change current directory
 ```
-cd get-me-date
+cd watch-rtp-play
 ```
 
 Install NPM dependencies
