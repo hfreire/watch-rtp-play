@@ -26,7 +26,6 @@ module "watch-rtp-play" {
   source = "github.com/antifragile-systems/antifragile-service"
 
   name                  = "${var.name}"
-  domain_name           = "${var.domain_name}"
   container_definitions = "${data.template_file.container_definitions.rendered}"
 
   api_enabled      = 1

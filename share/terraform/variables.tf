@@ -10,8 +10,6 @@ variable "name" {
 
 variable "version" {}
 
-variable "domain_name" {}
-
 variable "aws_region" {
   default = "eu-west-1"
 }
