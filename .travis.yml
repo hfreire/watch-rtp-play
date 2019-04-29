@@ -2,47 +2,61 @@ sudo: required
 language: node_js
 env:
   global:
-    - VERSION=$TRAVIS_TAG
-    - VERSION_COMMIT=$TRAVIS_COMMIT
+  - VERSION=$TRAVIS_TAG
+  - VERSION_COMMIT=$TRAVIS_COMMIT
 services:
-  - docker
+- docker
 node_js:
-  - 10.13
+- 10.13
 cache:
   directories:
-    - node_modules
+  - node_modules
 notifications:
   email: false
   slack:
     rooms:
-      secure: iiJS8LAUiJUJxP28NNyM4t2ePWRYs9wvIui8kUvefuC3RI5rzURsQeriOXoRxz/x1P4zUi+lW3D1HguumCi7SkonZNT7anm3kK/M5GfeMbNXl4MoYroyWCz7/EJ58W2LP+Wpe9Bxeb2+wbVa80Tysxkk2xYTu1r7S3YWUK+C9Rmf0r6IF8wYTIbuv6MFXinAO9r8uifydbjpC3bMP4RTH44EZy2XszXdi5EQ4zmtJnyskoUddGi2O+j9YmirEpO9WfjRHF57mAu+4a1SIjTlnqn0pnHfNEujUY65xnYH8HD11vNPEIfyn5rOyHWKD/zCfREddZUBuFaFpSuBb2zeteijT+em7XHlJVuQY7EZvabRlA1emU86LMmYSA7yALfMTlfeiDaXzSrpSzxiG1ZL0KUcZqztE7u3kHYDu0kwjtTRtShLtpT9GoUzduhRkcdVL2MKeWeLB3Mj9L9p6roqhwzhEOS2z1W1Sa5otv89qCgtAQZGbzvOkURoYnhm/xV9qTDu44jLHuUqtwzcZeuFwNmE1tHuyebiMXIzaJVgo/4aX2W/Njt5VxTzSLp6vhtDCMM4X/rQyoj3Y3BWapKuyEHICiVvp3KPf7yrqVWZHVo+vHJLCfSH2wmCqYvmGrefnb2NI3xuZ1FA3OqdDV78MSOz/EsMNVXySoMpGgSDLhk=
+      secure: iz6nXI0aVq/T9VH/yeR8MrJ9JhxkF1Nx83bw5/6ynROtWapAErXsv9DMPCq3QDaZe2G92vDbTUyQRtuhe6JmSuBJZXMpVSRg5mmMOAFS5mQP9MCuHcdMwUiWU3r5PIuTMMB14GZv+3iPSZFN2ijGN88jKJb1TTz/M7/ydadbaYmagMUmOj0ddDLmWx5/1D0Bi9KVbtSEcCy/2tg+cX63h328B92HCDhPETjrMCUP/UK1M7dg3V+9oNrjw54Nj2x70ASWKKvU65zygUFrXn0+HfOHW3cBuE0bdYfPLnk24pcreYXYhoCUIOJh6dHqGFN8B4mjX4exfvLQef6a5TH0EsjWRcCR8SSpxBVAUcEI3lTl0Gmqhx2AUiGyqVtw6EseUthT/reNzPloaDwFGTWK0QtSP3hB6zxiK0qUWwZO8/AJWNpa3zXhdriKGgUH1MzhoplpcMptSpCMN4CbJYJ/kGOQq37C//8UesxY4/qTDbbm427JIEqhFYkASnDDnA6ZfAdVo4qaqWgsCaVtaRKrSOr/aEZtmxQm747x5vxChn7rPZ9jizV/BuS2kTHSbWSfhW5/i1IPlorgZupj02RtU+EKjb6+jVLFOJ0TzQgjsZLBZkVSNurgfIwZdC6M5r965YYHzGs7fTC7btmwe+5aPnAgZTVebP4Dyh9njdpjY6U=
     on_success: never
     on_failure: always
     on_pull_requests: false
 before_install:
-  - npm install -g greenkeeper-lockfile@1
+- npm install -g greenkeeper-lockfile@1
 install:
-  - npm install
-  - |
-    curl -fSL "https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip" -o terraform.zip && \
-    echo "43543a0e56e31b0952ea3623521917e060f2718ab06fe2b2d506cfaa14d54527 *terraform.zip" | sha256sum -c - && \
-    sudo unzip -d /usr/local/bin/ terraform.zip
+- npm install
+- 'curl -fSL "https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip"
+  -o terraform.zip && \
+
+  echo "43543a0e56e31b0952ea3623521917e060f2718ab06fe2b2d506cfaa14d54527 *terraform.zip"
+  | sha256sum -c - && \
+
+  sudo unzip -d /usr/local/bin/ terraform.zip
+
+  '
 before_script:
-  - npm prune
-  - greenkeeper-lockfile-update
+- npm prune
+- greenkeeper-lockfile-update
 script:
-  - |
-    npm test && \
-    npm run build && \
-    npm run docker:test
+- 'npm test && \
+
+  npm run build && \
+
+  npm run docker:test
+
+  '
 after_success:
-  - npm run coveralls
-  - npm run semantic-release
-  - |
-    ([ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] || [ -n "$TRAVIS_TAG" ]) && \
-    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && \
-    npm run push
-  - |
-    [ -n "$TRAVIS_TAG" ] && npm run deploy
+- npm run coveralls
+- npm run semantic-release
+- '([ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] || [
+  -n "$TRAVIS_TAG" ]) && \
+
+  echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&
+  \
+
+  npm run push
+
+  '
+- '[ -n "$TRAVIS_TAG" ] && npm run deploy
+
+  '
 after_script:
-  - greenkeeper-lockfile-upload
+- greenkeeper-lockfile-upload
