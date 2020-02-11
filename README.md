@@ -1,6 +1,7 @@
 # :tv: Watch and :radio: listen 🇵🇹 RTP Play without a :computer: browser
 
-[![Build Status](https://travis-ci.org/hfreire/watch-rtp-play.svg?branch=master)](https://travis-ci.org/hfreire/watch-rtp-play)
+[![](https://github.com/hfreire/browser-as-a-service/workflows/ci/badge.svg)](https://github.com/hfreire/browser-as-a-service/actions?workflow=ci)
+[![](https://github.com/hfreire/browser-as-a-service/workflows/cd/badge.svg)](https://github.com/hfreire/browser-as-a-service/actions?workflow=cd)
 [![Coverage Status](https://coveralls.io/repos/github/hfreire/watch-rtp-play/badge.svg?branch=master)](https://coveralls.io/github/hfreire/watch-rtp-play?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/hfreire/watch-rtp-play/badge.svg)](https://snyk.io/test/github/hfreire/watch-rtp-play)
 [![](https://img.shields.io/github/release/hfreire/watch-rtp-play.svg)](https://github.com/hfreire/watch-rtp-play/releases)
@@ -12,7 +13,7 @@
 <p align="center"><img src="share/github/overview.gif" width="620"></p>
 
 ### Features
-* 8 TV channels :tv: 
+* 8 TV channels :tv:
 * 14 radio channels :radio:
 * Uses [Request on Steroids](https://github.com/hfreire/request-on-steroids) to rate limit, retry and circuit break outgoing HTTP requests :white_check_mark:
 * Launch :rocket: inside a Docker container :whale: so you don't need to manage the dependencies :raised_hands: :white_check_mark:
@@ -23,7 +24,7 @@
 #### Use it in your terminal
 Using it in your terminal requires [Docker](https://www.docker.com) installed in your system.
 
-##### Run the Docker image in a container 
+##### Run the Docker image in a container
 Detach from the container and expose port `4543`.
 ```
 docker run -d -p "4543:3000" hfreire/watch-rtp-play
@@ -108,7 +109,7 @@ ANTIFRAGILE_STATE_AWS_DYNAMODB_TABLE | The AWS DynamoDB table used for the antif
 ANTIFRAGILE_INFRASTRUCTURE_DOMAIN_NAME | The domain used for the antifragile infrastructure. | true | `undefined`
 
 ### How to contribute
-You can contribute either with code (e.g., new features, bug fixes and documentation) or by [donating 5 EUR](https://paypal.me/hfreire/5). You can read the [contributing guidelines](CONTRIBUTING.md) for instructions on how to contribute with code. 
+You can contribute either with code (e.g., new features, bug fixes and documentation) or by [donating 5 EUR](https://paypal.me/hfreire/5). You can read the [contributing guidelines](CONTRIBUTING.md) for instructions on how to contribute with code.
 
 All donation proceedings will go to the [Sverige för UNHCR](https://sverigeforunhcr.se), a swedish partner of the [UNHCR - The UN Refugee Agency](http://www.unhcr.org), a global organisation dedicated to saving lives, protecting rights and building a better future for refugees, forcibly displaced communities and stateless people.
 
