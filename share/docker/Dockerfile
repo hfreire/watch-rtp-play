@@ -1,38 +1,51 @@
-FROM node:10.13-alpine
+FROM node:13.8.0-alpine AS node
 
-LABEL maintainer="hugo@exec.sh"
-
-# Set app runtime environment variables
-ARG NPM_TOKEN
+FROM node AS build
 ARG NAME
-ENV NAME $NAME
-ARG VERSION
-ENV VERSION $VERSION
-ARG VERSION_COMMIT
-ENV VERSION_COMMIT $VERSION_COMMIT
-ARG VERSION_BUILD_DATE
-ENV VERSION_BUILD_DATE $VERSION_BUILD_DATE
+ARG NPM_TOKEN
+USER node
 
-# Create app directory
-RUN mkdir /home/node/$NAME \
-  && chown node:node /home/node/$NAME
+RUN mkdir /home/node/$NAME
 WORKDIR /home/node/$NAME
 
-# Install utils
-RUN apk --no-cache add \
+# Install npm packages
+COPY --chown=node:node package.json package-lock.json .snyk ./
+RUN NODE_ENV= npm ci
+
+# Build app
+COPY --chown=node:node src src/
+RUN set -x \
+  && npm run build --if-present \
+  && npm prune --production \
+  && npm cache clean --force
+
+FROM node
+LABEL maintainer="hugo@exec.sh"
+ARG NAME
+ARG VERSION
+ARG VERSION_COMMIT
+ARG VERSION_BUILD_DATE
+
+# Install base utils
+RUN set -x \
+  && apk --no-cache add \
     su-exec \
     curl \
     netcat-openbsd
 
-# Copy app source
-COPY --chown=node:node package.json package.json
-COPY --chown=node:node package-lock.json package-lock.json
-COPY --chown=node:node src src/
+RUN su-exec node mkdir /home/node/$NAME
+WORKDIR /home/node/$NAME
+
+# Copy app build
+COPY --from=build --chown=node:node /home/node/$NAME /home/node/$NAME
 COPY --chown=node:node share/docker/start.sh start.sh
 COPY --chown=node:node share/docker/test.sh test.sh
 
-# Install npm packages
-RUN su-exec node npm install --production
+# Set app runtime environment variables
+ENV NAME $NAME
+ENV VERSION $VERSION
+ENV VERSION_COMMIT $VERSION_COMMIT
+ENV VERSION_BUILD_DATE $VERSION_BUILD_DATE
 
 EXPOSE 3000
 
