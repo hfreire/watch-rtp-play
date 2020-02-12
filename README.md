@@ -1,7 +1,7 @@
 # :tv: Watch and :radio: listen 🇵🇹 RTP Play without a :computer: browser
 
-[![](https://github.com/hfreire/watch-rtp-play/workflows/ci/badge.svg)](https://github.com/hfreire/browser-as-a-service/actions?workflow=ci)
-[![](https://github.com/hfreire/watch-rtp-play/workflows/cd/badge.svg)](https://github.com/hfreire/browser-as-a-service/actions?workflow=cd)
+[![](https://github.com/hfreire/watch-rtp-play/workflows/ci/badge.svg)](https://github.com/hfreire/watch-rtp-play/actions?workflow=ci)
+[![](https://github.com/hfreire/watch-rtp-play/workflows/cd/badge.svg)](https://github.com/hfreire/watch-rtp-play/actions?workflow=cd)
 [![Coverage Status](https://coveralls.io/repos/github/hfreire/watch-rtp-play/badge.svg?branch=master)](https://coveralls.io/github/hfreire/watch-rtp-play?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/hfreire/watch-rtp-play/badge.svg)](https://snyk.io/test/github/hfreire/watch-rtp-play)
 [![](https://img.shields.io/github/release/hfreire/watch-rtp-play.svg)](https://github.com/hfreire/watch-rtp-play/releases)
