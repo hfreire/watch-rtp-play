@@ -51,7 +51,7 @@
     "testEnvironment": "node",
     "setupTestFrameworkScriptFile": "./test/helper.js",
     "testMatch": [
-      "<rootDir>/test/**.js"
+      "<rootDir>/test/**/*.js"
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",
