@@ -7,8 +7,8 @@
 
 const { Route } = require('serverful')
 
-const Joi = require('joi')
-const Boom = require('boom')
+const Joi = require('@hapi/joi')
+const Boom = require('@hapi/boom')
 
 const Request = require('../rtp-play-request')
 const channels = require('../channels.json')
