@@ -161,21 +161,6 @@ describe('Chunklist', () => {
     })
   })
 
-  describe('when configuring validate', () => {
-    beforeEach(() => {
-      subject = require('../../src/routes/chunklist')
-    })
-
-    it('should validate query params', () => {
-      const result = subject.validate()
-
-      expect(result).toHaveProperty('query')
-      expect(result.query).toHaveProperty('channel')
-      expect(result.query).toHaveProperty('bandwidth')
-      expect(result.query).toHaveProperty('proxy')
-    })
-  })
-
   describe('when configuring cors', () => {
     beforeEach(() => {
       subject = require('../../src/routes/chunklist')

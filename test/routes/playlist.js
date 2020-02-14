@@ -165,20 +165,6 @@ describe('Playlist', () => {
     })
   })
 
-  describe('when configuring validate', () => {
-    beforeEach(() => {
-      subject = require('../../src/routes/playlist')
-    })
-
-    it('should validate query params', () => {
-      const result = subject.validate()
-
-      expect(result).toHaveProperty('query')
-      expect(result.query).toHaveProperty('channel')
-      expect(result.query).toHaveProperty('proxy')
-    })
-  })
-
   describe('when configuring cors', () => {
     beforeEach(() => {
       subject = require('../../src/routes/playlist')
