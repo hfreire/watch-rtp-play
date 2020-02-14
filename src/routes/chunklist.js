@@ -48,7 +48,7 @@ class Chunklist extends Route {
 
   validate () {
     return {
-      query: {
+      query: Joi.object({
         channel: Joi.string()
           .required()
           .description('the channel'),
@@ -58,7 +58,7 @@ class Chunklist extends Route {
         proxy: Joi.boolean()
           .optional()
           .description('use proxy')
-      }
+      })
     }
   }
 

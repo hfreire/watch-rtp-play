@@ -56,14 +56,14 @@ class Playlist extends Route {
 
   validate () {
     return {
-      query: {
+      query: Joi.object({
         channel: Joi.string()
           .required()
           .description('the channel'),
         proxy: Joi.string()
           .optional()
           .description('use proxy')
-      }
+      })
     }
   }
 
