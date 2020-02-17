@@ -9,7 +9,7 @@ variable "docker_image_tag" {
 }
 
 variable "name" {
-  default = "browser-as-a-service"
+  default = "watch-rtp-play"
 }
 
 variable "aws_region" {
