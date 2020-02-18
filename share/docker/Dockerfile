@@ -1,5 +1,12 @@
 FROM node:13.8.0-alpine AS node
 
+# Install base utils
+RUN set -x \
+  && apk --no-cache add \
+    su-exec \
+    curl \
+    netcat-openbsd
+
 FROM node AS build
 ARG NAME
 ARG NPM_TOKEN
@@ -25,13 +32,6 @@ ARG NAME
 ARG VERSION
 ARG VERSION_COMMIT
 ARG VERSION_BUILD_DATE
-
-# Install base utils
-RUN set -x \
-  && apk --no-cache add \
-    su-exec \
-    curl \
-    netcat-openbsd
 
 RUN su-exec node mkdir /home/node/$NAME
 WORKDIR /home/node/$NAME
