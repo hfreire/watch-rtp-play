@@ -20,7 +20,7 @@
     "lodash": "4.17.15",
     "modern-logger": "1.5.55",
     "request-on-steroids": "1.1.66",
-    "serverful": "1.4.67"
+    "serverful": "1.4.68"
   },
   "devDependencies": {
     "coveralls": "3.0.9",
