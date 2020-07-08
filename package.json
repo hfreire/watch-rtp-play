@@ -19,7 +19,7 @@
     "health-checkup": "1.0.37",
     "lodash": "4.17.15",
     "modern-logger": "1.5.69",
-    "request-on-steroids": "1.1.77",
+    "request-on-steroids": "1.1.78",
     "serverful": "1.4.76"
   },
   "devDependencies": {
