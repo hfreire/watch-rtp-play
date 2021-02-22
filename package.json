@@ -17,7 +17,7 @@
   "homepage": "https://github.com/hfreire/watch-rtp-play#readme",
   "dependencies": {
     "health-checkup": "1.0.44",
-    "lodash": "4.17.20",
+    "lodash": "4.17.21",
     "modern-logger": "1.5.85",
     "request-on-steroids": "1.1.106",
     "serverful": "1.4.89"
